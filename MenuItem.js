@@ -8,12 +8,12 @@ function MenuItem(i, nItems) {
     this.rotf = 90;
     this.rotation = 0;
     this.scale = 0;
-    let h = 360/nItems;
-    this.fillColor = color(h*this.i, 126, 255);
+    let h = 360 / nItems;
+    this.fillColor = color(h * this.i, 126, 255);
     //this.m = map(this.i, 0, this.Items, 270, 360);
     this.m = map(i, 0, nItems, 285, 375);
-    this.xf = 50*cos(radians(this.m));
-    this.yf = 50*sin(radians(this.m));
+    this.xf = 50 * cos(radians(this.m));
+    this.yf = 50 * sin(radians(this.m));
     this.draw = function() {
         noStroke();
         push();
@@ -38,13 +38,13 @@ function MenuItem(i, nItems) {
                 x: 0,
                 y: 0,
                 s: 0,
-                r:0
+                r: 0
             })
             .to({
                 x: this.xf,
                 y: this.yf,
                 s: 1,
-                r:this.rotf
+                r: this.rotf
             }, 300)
             .easing(TWEEN.Easing.Circular.InOut)
             .onUpdate(function() {
@@ -54,7 +54,7 @@ function MenuItem(i, nItems) {
                 target.rotation = this.r;
                 target.scale = this.s;
             }).start();
-            animate();
+        animate();
     };
     this.hide = function() {
         let target = this; //defines this object as the target variable to allow for access within the tween object;
@@ -68,7 +68,7 @@ function MenuItem(i, nItems) {
                 x: 0,
                 y: 0,
                 s: 0,
-                r:0
+                r: 0
             }, 300)
             .easing(TWEEN.Easing.Circular.InOut)
             .onUpdate(function() {

@@ -1,7 +1,7 @@
 var messageType = {
     // this enum is used to allow for styling the message to indecate the type of different information presented to the user
     complete: ['#6FBB84', '#91F5AD'], //green used for positive
-    tip: [], //blue to give relevent information to the task the user is preforming
+    tip: ['#4E4EE8', '#4165f0'], //blue to give relevent information to the task the user is preforming
     error: ['#E8352E', '#F06541'], //red is used to alert users of actions high consequnce
     alert: ['#FFED51', '#FFED75'] //yellow theme, alert minor errors or suggesting changes
 };
@@ -53,17 +53,20 @@ function MessageBar(message, type) {
             }
         }
     };
-    this.closeButton = function(){
-      var ex = this.w - this.radius;
-      var ey = this.h - 40;
-      var px = [ex - this.radius / 4, ex + this.radius / 4];
-      var py = [ey - this.radius / 4, ey + this.radius / 4];
-      line(px[0], py[0], px[1], py[1]);
-      line(px[0], py[1], px[1], py[0]);
-      ellipse(ex, ey, this.radius, this.radius);
-      //this.clicked = function(){};
+    this.closeButton = function() {
+        var ex = this.w - this.radius;
+        var ey = this.h - 40;
+        var px = [ex - this.radius / 4, ex + this.radius / 4];
+        var py = [ey - this.radius / 4, ey + this.radius / 4];
+        line(px[0], py[0], px[1], py[1]);
+        line(px[0], py[1], px[1], py[0]);
+        ellipse(ex, ey, this.radius, this.radius);
+        //this.clicked = function(){};
     };
-    this.show = function() {
+    this.show = function(visible) {
+        let yf = height - 35;
+        let af = 1;
+
         var target = this; //defines this object as the target variable to allow for access within the tween object;
         var tween = new TWEEN.Tween({
                 y: height,
@@ -92,7 +95,7 @@ function MessageBar(message, type) {
             .onUpdate(function() {
                 target.y = this.y;
             }).start();
-              animate();
+        animate();
     };
     this.windowResized = function() {
         //keeps bar at the bottom of the screen

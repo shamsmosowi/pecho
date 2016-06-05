@@ -23,12 +23,7 @@ While the overwhelming majority of “food” animals live and die in misery and
     this.opened = false;
     this.draw = function() {
         this.mainButton();
-        if (this.opened) {
-            var itemLength = this.items.length;//save on computation
-            for (var i = 0; i < itemLength; i++) {
-                this.items[i].draw();
-            }
-        }
+        if (this.opened) {this.items.forEach(drawItem);}
     };
     this.mainButton = function() {
       //TODO:Add a blur behind menu to focus, or maybe just a darken everything, if blur is expensive
@@ -56,26 +51,19 @@ While the overwhelming majority of “food” animals live and die in misery and
         endShape();
     };
     this.clicked = function() {
-
         if (mouseX < this.a[4] && mouseY < this.c[5] && !this.opened) {
             //changes the state of the button
             this.af = [10, 10,20,20, 30, 10];
             this.bf = [20, 20,20,20, 20, 20];
             this.cf = [10, 30,20,20, 30, 30];
             this.opened = true;
-            for (var k = 0; k < this.items.length; k++) {
-                this.items[k].show();
-            }
+            this.items.forEach(x => x.show());
         } else if (mouseX < this.a[4] && mouseY < this.c[5] && this.opened) {
           this.af = [10, 10,20,10, 30, 10];
           this.bf = [10, 20,20,20, 30, 20];
           this.cf = [10, 30, 20,30,30, 30];
             this.opened = false;
-
-
-        }
-        for (var i = 0; i < this.items.length; i++) {
-            this.items[i].hide();
+            this.items.forEach(x => x.hide());
         }
         //animates the menu
         //changes the values of a,b,c over 300ms period,
@@ -127,11 +115,7 @@ While the overwhelming majority of “food” animals live and die in misery and
                 target.c = [this.c1, this.c2, this.c3, this.c4, this.c5, this.c6];
             }).start();
               animate();
-
-        for (var l = 0; l < this.nItems; l++) {
-            this.items[l].clicked();
-        }
-
+        items.forEach(clickItem);
     };
 
 }
