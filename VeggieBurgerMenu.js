@@ -27,7 +27,7 @@ While the overwhelming majority of “food” animals live and die in misery and
     };
     this.mainButton = function() {
       //TODO:Add a blur behind menu to focus, or maybe just a darken everything, if blur is expensive
-        fill(50, 50, 50, 250);
+        stroke(0, 0, 30, 255);
         if (mouseX < this.a[4] && mouseY < this.c[5]) {
             strokeWeight(5);
         } else {
@@ -35,6 +35,7 @@ While the overwhelming majority of “food” animals live and die in misery and
         }
         noFill();
         beginShape();
+
         vertex(this.a[0],this.a[1]);
         vertex(this.a[2],this.a[3]);
         vertex(this.a[4],this.a[5]);
@@ -115,7 +116,7 @@ While the overwhelming majority of “food” animals live and die in misery and
                 target.c = [this.c1, this.c2, this.c3, this.c4, this.c5, this.c6];
             }).start();
               animate();
-        items.forEach(clickItem);
+                this.items.forEach(clickItem);
     };
 
 }

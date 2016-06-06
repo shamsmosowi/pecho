@@ -1,16 +1,32 @@
-function Slider(){
-  this.x = 200;
-  this.y = 200;
-  this.w = 200;
-  this.h = 30;
-  this.cx = this.x;
-  this.cy = this.y;
-  this.draw = function(){
-    rectMode(ROUND);
-    rect(this.x,this.y,this.w,this.h);
-  };
-  this.drag = function(){
-    return map(this.x-this.cx,0,this.w,0,100);
-  };
 
+class Slider{
+  constructor(value,x,y,w,h,start,end){
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = h;
+    this.startValue = start;
+    this.endValue = end;
+    this.value = value;
+  }
+
+  draw(){
+    push();
+    translate(this.x,this.y);
+    rect(0,0,this.w,this.h,this.h/2,this.h/2,this.h/2,this.h/2);
+    this.cx = map(this.value, this.startValue,this.endValue,0,this.w);
+    ellipse(this.cx,this.h/2,this.h*2,this.h*2);
+    pop();
+  }
+  drag(){
+    if (mouseX>this.x&&mouseX<this.w+this.x&&mouseY>this.y&&mouseY<this.h+this.y) {
+      this.value =  map(mouseX,this.x,this.x+this.w,this.startValue,this.endValue);
+    }
+  }
+
+}
+class VariableSlider extends Slider{
+  constructor(x,y,w,h,start,end){
+  super(x,y,w,h,start,end);
+  }
 }

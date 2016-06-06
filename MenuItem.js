@@ -1,26 +1,25 @@
 function MenuItem(i, nItems) {
     this.i = i;
     this.nItems = nItems;
-    this.x = 0;
-    this.y = 0;
-    this.w = 45;
-    this.h = 45;
-    this.rotf = 90;
+    this.w = 60;
+    this.h = 60;
+    this.rotf = 180;
+    this.scalef = 1;
     this.rotation = 0;
     this.scale = 0;
-    let h = 360 / nItems;
-    this.fillColor = color(h * this.i, 126, 255);
-    //this.m = map(this.i, 0, this.Items, 270, 360);
-    this.m = map(i, 0, nItems, 285, 375);
-    this.xf = 50 * cos(radians(this.m));
-    this.yf = 50 * sin(radians(this.m));
+    this.m = map(this.i, 0, this.nItems, 0, 1);
+    this.fillColor = color(this.m * 360, 166, 255);
+    this.x = 0;
+    this.y = 0;
+    this.xf = 20;
+    this.yf = 40 + this.m * 120;
     this.draw = function() {
         noStroke();
         push();
-        scale(this.scale);
-        //rotate(radians(this.rotation));
+
+        translate(this.x, 30 + this.y);
         push();
-        translate(this.x, this.y);
+        scale(this.scale);
         fill(this.fillColor);
         ellipse(this.x, this.y, this.w, this.h);
         pop();
@@ -31,27 +30,25 @@ function MenuItem(i, nItems) {
 
     };
     this.show = function() {
+
         /*x = r × cos( θ )
         y = r × sin( θ )*/
         let target = this; //defines this object as the target variable to allow for access within the tween object;
         let tween = new TWEEN.Tween({
-                x: 0,
-                y: 0,
-                s: 0,
-                r: 0
+                s: target.scale,
+                x: target.x,
+                y: target.y
             })
             .to({
-                x: this.xf,
-                y: this.yf,
                 s: 1,
-                r: this.rotf
+                x: target.xf,
+                y: target.yf
             }, 300)
             .easing(TWEEN.Easing.Circular.InOut)
             .onUpdate(function() {
-                target.scale = this.s;
+
                 target.x = this.x;
                 target.y = this.y;
-                target.rotation = this.r;
                 target.scale = this.s;
             }).start();
         animate();
@@ -59,27 +56,22 @@ function MenuItem(i, nItems) {
     this.hide = function() {
         let target = this; //defines this object as the target variable to allow for access within the tween object;
         let tween = new TWEEN.Tween({
+                s: target.scale,
                 x: target.x,
-                y: target.y,
-                s: 1,
-                r: target.rotation
+                y: target.y
             })
             .to({
-                x: 0,
-                y: 0,
                 s: 0,
-                r: 0
+                x: 0,
+                y: target.yf
             }, 300)
             .easing(TWEEN.Easing.Circular.InOut)
             .onUpdate(function() {
-                target.scale = this.s;
+
                 target.x = this.x;
                 target.y = this.y;
                 target.scale = this.s;
-                target.rotation = this.r;
             }).start();
-
+        animate();
     };
-
-
 }
