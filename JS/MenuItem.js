@@ -1,19 +1,19 @@
-class MenuItem extends Button{
-  constructor(x,y,w,h,s,r,img,enabled,name,call,i,nItems){
-    super(x,y,w,h,s,r,img,enabled,name,call);
-    this.i = i;
-    this.nItems = nItems;
-    this.rotf = 180;
-    this.scalef = 1;
-    this.rotation = 0;
-    this.scale = 0;
-    this.m = map(this.i, 0, this.nItems, 0, 1);
-    this.fillColor = color(this.m * 360, 166, 255);
-    this.x = 0;
-    this.y = 0;
-    this.xf = 20;
-    this.yf = 40 + this.m * 120;
-  }
+class MenuItem extends Button {
+    constructor(options, i, nItems) {
+        super(options);
+        this.i = i;
+        this.nItems = nItems;
+        this.rotf = 180;
+        this.scalef = 1;
+        this.rotation = 0;
+        this.scale = 0;
+        this.m = map(this.i, 0, this.nItems, 0, 1);
+        this.fillColor = color(this.m * 360, 166, 255);
+        this.x = 0;
+        this.y = 0;
+        this.xf = 20;
+        this.yf = 40 + this.m * 120;
+    }
     draw() {
         noStroke();
         push();
@@ -28,7 +28,7 @@ class MenuItem extends Button{
 
     }
 
-  show() {
+    show() {
         /*x = r × cos( θ )
         y = r × sin( θ )*/
         let target = this; //defines this object as the target variable to allow for access within the tween object;
@@ -51,7 +51,7 @@ class MenuItem extends Button{
             }).start();
         animate();
     }
-  hide() {
+    hide() {
         let target = this; //defines this object as the target variable to allow for access within the tween object;
         let tween = new TWEEN.Tween({
                 s: target.scale,

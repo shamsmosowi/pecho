@@ -6,7 +6,7 @@ var canvas;
 var s;
 var grab;
 var btnsArray = {};
-var buttonText = true;// controls showing of text when mouse hover on button
+var buttonText = true; // controls showing of text when mouse hover on button
 var btnImgDict = {};
 
 function preload() {
@@ -25,17 +25,93 @@ function preload() {
     btnImgDict.download = downloadImg;
     btnImgDict.delete = deleteImg;
     btnsArray.undo = undoBtn;
-      veggieBurgerMenu = new VeggieBurgerMenu();
-    var undoBtn = new Button(80,25,40,40,1,-360,undoImg,true,"undo");
+    veggieBurgerMenu = new VeggieBurgerMenu();
+
+    var undoBtn = new Button({
+        x: 80,
+        y: 25,
+        w: 40,
+        h: 40,
+        s: 1,
+        r: -360,
+        img: undoImg,
+        enabled: 1,
+        name: "undo",
+        call: function() {
+            undo()
+        },
+        success: "pervious action was undone",
+        fail: "there is no action history"
+    });
     btnsArray.undo = undoBtn;
-    var redoBtn = new Button(130,25,40,40,1,360,redoImg,true,"redo");
+    var redoBtn = new Button({
+        x: 130,
+        y: 25,
+        w: 40,
+        h: 40,
+        s: 1,
+        r: 360,
+        img: redoImg,
+        enabled: 1,
+        name: "redo",
+        call: function() {
+            redo()
+        },
+        success: "pervious action was redone",
+        fail: "there is no action to be done"
+    });
     btnsArray.redo = redoBtn;
-    var copyBtn = new Button(180,25,40,40,1.2,0,copyImg,true,"copy");
+    var copyBtn = new Button({
+        x: 180,
+        y: 25,
+        w: 40,
+        h: 40,
+        s: 1.2,
+        r: 0,
+        img: copyImg,
+        enabled: 1,
+        name: "copy",
+        call: function() {
+            copy()
+        },
+        success: "selected element/s were copied",
+        fail: "select an element to copy"
+    });
     btnsArray.copy = copyBtn;
-    var cutBtn = new Button(230,25,40,40,1.2,0,cutImg,true,"cut");
-  btnsArray.cut = cutBtn;
-    var pasteBtn = new Button(280,25,40,40,1.2,0,pasteImg,false,"paste",function(){});
-  btnsArray.paste = pasteBtn;
+    var cutBtn = new Button({
+        x: 230,
+        y: 25,
+        w: 40,
+        h: 40,
+        s: 1.2,
+        r: 0,
+        img: cutImg,
+        enabled: 1,
+        name: "cut",
+        call: function() {
+            cut()
+        },
+        success: "selected element/s were cut",
+        fail: "select an element to cut"
+    });
+    btnsArray.cut = cutBtn;
+    var pasteBtn = new Button({
+        x: 280,
+        y: 25,
+        w: 40,
+        h: 40,
+        s: 1.2,
+        r: 0,
+        img: pasteImg,
+        enabled: 1,
+        name: "paste",
+        call: function() {
+            paste()
+        },
+        success: "clipboard items were pasted",
+        fail: "clipboard is empty"
+    });
+    btnsArray.paste = pasteBtn;
 
 }
 
@@ -46,10 +122,37 @@ function setup() {
     canvas = new Canvas();
     var zoomOutImg = loadImage("assests/buttons/functions/zoomOut.png");
     var zoomInImg = loadImage("assests/buttons/functions/zoomIn.png");
-    var zoomInBtn = new Button(width - 30,height -30,35,35,1.2,0,zoomInImg,true,"zoom in",function(){zoom.value = zoom.value*1.1;});
-  btnsArray.zoomIn = zoomInBtn;
-    var zoomOutBtn = new Button( width - 270,height - 30,35,35,0.8,0,zoomOutImg,true,"zoom out",function(){zoom.value = zoom.value*0.9;});
-  btnsArray.zoomOut = zoomOutBtn;
+
+    var zoomInBtn = new Button({
+        x: width - 30,
+        y: height - 30,
+        w: 35,
+        h: 35,
+        s: 1.2,
+        r: 0,
+        img: zoomInImg,
+        enabled: true,
+        name: "zoom in",
+        call: function() {
+            zoom.value = zoom.value * 1.1;
+        }
+    });
+    btnsArray.zoomIn = zoomInBtn;
+    var zoomOutBtn = new Button({
+        x: width - 280,
+        y: height - 30,
+        w: 35,
+        h: 35,
+        s: 0.8,
+        r: 0,
+        img: zoomOutImg,
+        enabled: true,
+        name: "zoom out",
+        call: function() {
+            zoom.value = zoom.value * 0.9;
+        }
+    });
+    btnsArray.zoomOut = zoomOutBtn;
     //noLoop();
 
 }
@@ -63,11 +166,11 @@ function draw() {
     canvas.draw();
     messagesArray.forEach(drawItem); //loops through the array to show messages
     //btnsArray.forEach(drawItem);
-    for(var index in btnsArray) {
-      btnsArray[index].draw();
-}
+    for (var index in btnsArray) {
+        btnsArray[index].draw();
+    }
     veggieBurgerMenu.draw();
-    //showFrameRate();
+    showFrameRate();
 
 }
 
@@ -99,9 +202,10 @@ function showFrameRate() {
     strokeWeight(1);
     textSize(24);
     text(frameCount / (millisecond / 1000), width - 40, height - 10);
-    //  print(frameCount / (millisecond / 1000));
+    // print(frameCount / (millisecond / 1000));
 }
 var mousePos;
+
 function mouseClicked() {
     // mouse clicked, detects mouse press after release
     // this is used for actions where user can cancel by holding the key while moving away from the action button.()
@@ -109,12 +213,13 @@ function mouseClicked() {
     veggieBurgerMenu.clicked();
     messagesArray.forEach(clickItem);
     //btnsArray.forEach(clickItem);
-    for(var index in btnsArray) {
-    btnsArray[index].clicked();
+    for (var index in btnsArray) {
+        btnsArray[index].clicked();
+    }
 }
-  }
+
 function mousePressed() {
-  // this  function is called as the mouse is press, before release
+    // this  function is called as the mouse is press, before release
     mousePos = createVector(mouseX, mouseY);
     print(mousePos);
 }
@@ -135,5 +240,25 @@ function keyPressed() {
     //TODO: implement keyboard interface(delete, copy,paste, cut,save)
     //TODO: arrow keys to move visual elements/canvas
 
+
+}
+
+function undo() {
+
+}
+
+function redo() {
+
+}
+
+function cut() {
+
+}
+
+function copy() {
+
+}
+
+function paste() {
 
 }

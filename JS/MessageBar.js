@@ -1,22 +1,26 @@
 var messageType = {
     // this enum is used to allow for styling the message to indecate the type of different information presented to the user
-    complete: ['#6FBB84', '#91F5AD'], //green used for positive
-    tip: ['#4E4EE8', '#4165f0'], //blue to give relevent information to the task the user is preforming
-    error: ['#E8352E', '#F06541'], //red is used to alert users of actions high consequnce
-    alert: ['#FFED51', '#FFED75'] //yellow theme, alert minor errors or suggesting changes
+    complete: ['#6FBB84', '#91F5AD', '#fff'], //green used for positive
+    tip: ['#4E4EE8', '#4165f0', '#fff'], //blue to give relevent information to the task the user is preforming
+    error: ['#E8352E', '#F06541', '#fff'], //red is used to alert users of actions high consequnce
+    alert: ['#FFED51', '#FFED75', '#000'] //yellow theme, alert minor errors or suggesting changes
+        //TODO: change colours
 };
-
+var messageTimer = true; //switchs message timer on
 function MessageBar(message, type) {
     // a class for alerting users of problems, notify for any changes, and provides relevent tips related to the context of what the user is creating(by observing selected elements or tools being used)
     // takes a string and message enum value, creates message bar with a dynamic width depending on message length and buttons buttons
+
     this.messageText = message;
     this.y = height;
     this.w = this.messageText.length * 9 + 100;
     this.x = width / 2 - this.w / 2;
     this.h = 60;
+    this.p = 0;
     this.fillColor = type[0];
     this.strokeColor = type[1];
-    this.textColor = color(80);
+    this.textColor = type[2];
+    this.duration = this.messageText.length * 400;
     this.radius = 25;
     this.visible = true;
     this.draw = function() {
@@ -60,7 +64,8 @@ function MessageBar(message, type) {
         var py = [ey - this.radius / 4, ey + this.radius / 4];
         line(px[0], py[0], px[1], py[1]);
         line(px[0], py[1], px[1], py[0]);
-        ellipse(ex, ey, this.radius, this.radius);
+        //ellipse(ex, ey, this.radius, this.radius);
+        arc(ex, ey, this.radius, this.radius, this.p, 2 * PI - 0.01);
         //this.clicked = function(){};
     };
     this.show = function(visible) {
@@ -80,6 +85,34 @@ function MessageBar(message, type) {
             .onUpdate(function() {
                 target.y = this.y;
             }).start();
+        if (messageTimer) {
+            var tt = new TWEEN.Tween({
+                    p: 0
+                })
+                .to({
+                    p: 2 * PI - 0.01,
+                }, target.duration)
+                .easing(TWEEN.Easing.Linear.None)
+                .onUpdate(function() {
+                    target.p = this.p;
+                    if (target.p > 6.249) {
+                        let tween = new TWEEN.Tween({
+                                y: height - 35,
+                                s: 1
+                            })
+                            .to({
+                                y: height,
+                                s: 0
+                            }, 300)
+                            .easing(TWEEN.Easing.Circular.InOut)
+                            .onUpdate(function() {
+                                target.y = this.y;
+                            }).start();
+                    }
+
+                }).start();
+        }
+        animate();
     };
     this.hide = function() {
         let target = this; //defines this object as the target variable to allow for access within the tween object;
