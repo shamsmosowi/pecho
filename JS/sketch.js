@@ -8,7 +8,7 @@ var grab;
 var btnsArray = {};
 var buttonText = true; // controls showing of text when mouse hover on button
 var btnImgDict = {};
-
+var redoArray =[];
 function preload() {
     // things to load before setup() runs
 /*    app.listen(3000, '0.0.0.0', function() {
@@ -118,22 +118,21 @@ function preload() {
     });
     btnsArray.paste = pasteBtn;
     var settingsBtn = new Button({
-        x: 280,
-        y: 25,
-        w: 40,
-        h: 40,
-        s: 1.2,
-        r: 0,
+        x: windowWidth - 30,
+        y: 30,
+        w: 45,
+        h: 45,
+        s: 1.1,
+        r: 360,
         img: settingsImg,
-        enabled: 1,
+        enabled: true,
         name: "Settings",
         call: function() {
-            paste();
-        },
-        success: "clipboard items were pasted",
-        fail: "clipboard is empty"
+          //shows settings menu
+
+        }
     });
-    btnsArray.paste = pasteBtn;
+    btnsArray.settings = settingsBtn;
 }
 
 function setup() {
@@ -160,7 +159,7 @@ function setup() {
     });
     btnsArray.zoomIn = zoomInBtn;
     var zoomOutBtn = new Button({
-        x: width - 280,
+        x: width - 275,
         y: height - 30,
         w: 35,
         h: 35,
@@ -174,6 +173,7 @@ function setup() {
         }
     });
     btnsArray.zoomOut = zoomOutBtn;
+
     //noLoop();
 
 }
@@ -246,7 +246,8 @@ function mousePressed() {
 }
 
 function mouseDragged() {
-    if (mouseX > canvas.x && mouseY > canvas.y && mouseX < canvas.x + (canvas.ws * 1000) && mouseY < canvas.y + (canvas.hs * 1000)) {
+//  if(dist(mouseX,mouseY,canvas.x,canvas.y)<canvas.ws*1000){
+    if (mouseX > canvas.x - canvas.ws*1920/2 && mouseY > canvas.y - canvas.hs*1080/2 && mouseX < canvas.x + (canvas.ws * 1920)/2 && mouseY < canvas.y + (canvas.hs * 1080)/2) {
         canvas.drag.x -= (mousePos.x - mouseX);
         canvas.drag.y -= (mousePos.y - mouseY);
         mousePos.x = mouseX;

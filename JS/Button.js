@@ -1,5 +1,5 @@
 var voiceSpeaker = "UK English Male";//TODO:array of different voices
-var voiceEnable = true;
+var voiceEnable = false;
 class Button {
     constructor(options) {
         this.x = options.x;
@@ -66,8 +66,9 @@ class Button {
             this.hhf = this.h;
             noStroke();
             fill(40);
+            textAlign(CENTER);
             textSize(11);
-            text(this.name, -this.w / 4, this.h - 10);
+            text(this.name,0, this.h - 10);
         } else {
           this.spoke = false;
             this.hwf = 0;
