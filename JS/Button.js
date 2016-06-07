@@ -1,3 +1,5 @@
+var voiceSpeaker = "UK English Male";//TODO:array of different voices
+var voiceEnable = true;
 class Button {
     constructor(options) {
         this.x = options.x;
@@ -19,6 +21,7 @@ class Button {
         this.enabled = options.enabled;
         this.name = options.name;
         this.call = options.call;
+              this.spoke = false;
     }
     draw() {
         push();
@@ -51,8 +54,14 @@ class Button {
 
 
     }
+
     animateHover(hovering) {
+
         if (hovering && this.enabled) {
+          if(!this.spoke&&voiceEnable){
+            responsiveVoice.speak(this.name,voiceSpeaker);
+          }
+          this.spoke = true;
             this.hwf = this.w;
             this.hhf = this.h;
             noStroke();
@@ -60,6 +69,7 @@ class Button {
             textSize(11);
             text(this.name, -this.w / 4, this.h - 10);
         } else {
+          this.spoke = false;
             this.hwf = 0;
             this.hhf = 0;
         }

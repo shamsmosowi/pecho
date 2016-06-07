@@ -27,7 +27,7 @@ class MenuItem extends Button {
         pop();
 
     }
-
+    
     show() {
         /*x = r × cos( θ )
         y = r × sin( θ )*/

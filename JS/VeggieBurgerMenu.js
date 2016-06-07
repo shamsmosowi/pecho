@@ -14,6 +14,7 @@ function VeggieBurgerMenu() {
     this.nItems = 3;
     this.background = 0;
     this.backgroundf = 0;
+    this.spoke =false;
     this.items.push(new MenuItem({
         x: 80,
         y: 25,
@@ -68,11 +69,10 @@ function VeggieBurgerMenu() {
     this.mainButton = function() {
         //TODO:Add a blur behind menu to focus, or maybe just a darken everything, if blur is expensive
         stroke(0, 0, 30, 255);
-        if (mouseX < this.a[4] && mouseY < this.c[5]) {
-            strokeWeight(5);
-        } else {
-            strokeWeight(3);
-        }
+
+          this.onHover(mouseX < this.a[4] && mouseY < this.c[5]);
+
+
         noFill();
         beginShape();
 
@@ -187,5 +187,17 @@ function VeggieBurgerMenu() {
         animate();
 
     };
+    this.onHover = function(state){
+      if(state){
+      strokeWeight(4);
+      if(!this.spoke&&voiceEnable){
+        this.spoke = true;
+        responsiveVoice.speak("Menu",voiceSpeaker);
+      }
+    }else{
+      this.spoke = false;
+      strokeWeight(2.5);
+    }
+  };
 
 }

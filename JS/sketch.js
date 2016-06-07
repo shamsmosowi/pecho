@@ -11,6 +11,10 @@ var btnImgDict = {};
 
 function preload() {
     // things to load before setup() runs
+/*    app.listen(3000, '0.0.0.0', function() {
+    console.log('Listening to port:  ' + 3000);
+
+});*/
     veggieBurgerMenu = new VeggieBurgerMenu();
     grab = loadImage("assests/cursors/grab.png");
     var undoImg = loadImage("assests/buttons/arrows/undo-1.png");
@@ -21,6 +25,7 @@ function preload() {
     var downloadImg = loadImage("assests/buttons/functions/download.png");
     var inviteImg = loadImage("assests/buttons/functions/invite.png");
     var deleteImg = loadImage("assests/buttons/functions/delete.png");
+    var settingsImg = loadImage("assests/buttons/functions/settings.png");
     btnImgDict.invite = inviteImg;
     btnImgDict.download = downloadImg;
     btnImgDict.delete = deleteImg;
@@ -38,7 +43,7 @@ function preload() {
         enabled: 1,
         name: "undo",
         call: function() {
-            undo()
+            undo();
         },
         success: "pervious action was undone",
         fail: "there is no action history"
@@ -55,7 +60,7 @@ function preload() {
         enabled: 1,
         name: "redo",
         call: function() {
-            redo()
+            redo();
         },
         success: "pervious action was redone",
         fail: "there is no action to be done"
@@ -72,7 +77,7 @@ function preload() {
         enabled: 1,
         name: "copy",
         call: function() {
-            copy()
+            copy();
         },
         success: "selected element/s were copied",
         fail: "select an element to copy"
@@ -89,7 +94,7 @@ function preload() {
         enabled: 1,
         name: "cut",
         call: function() {
-            cut()
+            cut();
         },
         success: "selected element/s were cut",
         fail: "select an element to cut"
@@ -106,13 +111,29 @@ function preload() {
         enabled: 1,
         name: "paste",
         call: function() {
-            paste()
+            paste();
         },
         success: "clipboard items were pasted",
         fail: "clipboard is empty"
     });
     btnsArray.paste = pasteBtn;
-
+    var settingsBtn = new Button({
+        x: 280,
+        y: 25,
+        w: 40,
+        h: 40,
+        s: 1.2,
+        r: 0,
+        img: settingsImg,
+        enabled: 1,
+        name: "Settings",
+        call: function() {
+            paste();
+        },
+        success: "clipboard items were pasted",
+        fail: "clipboard is empty"
+    });
+    btnsArray.paste = pasteBtn;
 }
 
 function setup() {
