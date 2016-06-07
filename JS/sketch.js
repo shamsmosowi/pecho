@@ -9,12 +9,18 @@ var btnsArray = {};
 var buttonText = true; // controls showing of text when mouse hover on button
 var btnImgDict = {};
 var redoArray =[];
+var OSName = "Unknown";
 function preload() {
     // things to load before setup() runs
 /*    app.listen(3000, '0.0.0.0', function() {
     console.log('Listening to port:  ' + 3000);
 
 });*/
+if (window.navigator.userAgent.indexOf("Windows"))OSName="Windows";
+if (window.navigator.userAgent.indexOf("Mac")!=-1) OSName="Mac/iOS";
+if (window.navigator.userAgent.indexOf("X11")!=-1) OSName="UNIX";
+if (window.navigator.userAgent.indexOf("Linux")!=-1) OSName="Linux";
+  console.log(OSName);
     veggieBurgerMenu = new VeggieBurgerMenu();
     grab = loadImage("assests/cursors/grab.png");
     var undoImg = loadImage("assests/buttons/arrows/undo-1.png");
@@ -26,10 +32,18 @@ function preload() {
     var inviteImg = loadImage("assests/buttons/functions/invite.png");
     var deleteImg = loadImage("assests/buttons/functions/delete.png");
     var settingsImg = loadImage("assests/buttons/functions/settings.png");
+    var zoomOutImg = loadImage("assests/buttons/functions/zoomOut.png");
+    var zoomInImg = loadImage("assests/buttons/functions/zoomIn.png");
+    var fullScreenImg = loadImage("assests/buttons/arrows/full-screen.png");
+    btnImgDict.fullScreen = fullScreenImg;
     btnImgDict.invite = inviteImg;
     btnImgDict.download = downloadImg;
     btnImgDict.delete = deleteImg;
     btnsArray.undo = undoBtn;
+    btnsArray.zoomIn = zoomInImg;
+    btnsArray.zoomOut = zoomOutImg;
+
+
     veggieBurgerMenu = new VeggieBurgerMenu();
 
     var undoBtn = new Button({
@@ -140,8 +154,7 @@ function setup() {
 
     colorMode(HSB, 360, 100, 100, 100);
     canvas = new Canvas();
-    var zoomOutImg = loadImage("assests/buttons/functions/zoomOut.png");
-    var zoomInImg = loadImage("assests/buttons/functions/zoomIn.png");
+
 
     var zoomInBtn = new Button({
         x: width - 30,
@@ -150,7 +163,7 @@ function setup() {
         h: 35,
         s: 1.2,
         r: 0,
-        img: zoomInImg,
+        img: btnsArray.zoomIn,
         enabled: true,
         name: "zoom in",
         call: function() {
@@ -159,13 +172,13 @@ function setup() {
     });
     btnsArray.zoomIn = zoomInBtn;
     var zoomOutBtn = new Button({
-        x: width - 275,
-        y: height - 30,
+        x: width - 270,
+        y: height - 25,
         w: 35,
         h: 35,
         s: 0.8,
         r: 0,
-        img: zoomOutImg,
+        img: btnsArray.zoomOut,
         enabled: true,
         name: "zoom out",
         call: function() {
@@ -174,6 +187,25 @@ function setup() {
     });
     btnsArray.zoomOut = zoomOutBtn;
 
+    var fullScreenBtn = new Button({
+        x: width - 310,
+        y: height - 26,
+        w: 35,
+        h: 35,
+        s: 1.2,
+        r: 0,
+        img: btnImgDict.fullScreen,
+        enabled: true,
+        name: "fit canvas",
+        call: function() {
+        //  resizes and centers the canvas
+          canvas.drag.x = 0;
+        canvas.drag.y = 0;
+            zoom.value = 1;
+        }
+    });
+    btnsArray.fullScreen = fullScreenBtn;
+    mousePos = createVector(mouseX,mouseY);
     //noLoop();
 
 }
@@ -192,7 +224,10 @@ function draw() {
     }
     veggieBurgerMenu.draw();
     showFrameRate();
-
+    noFill();
+    strokeWeight(1.5);
+    stroke(240,65,50,70);if(mouse){
+    rect(mousePos.x,mousePos.y,mouseX-mousePos.x,mouseX-mousePos.y);}
 }
 
 function windowResized() {
@@ -226,13 +261,14 @@ function showFrameRate() {
     // print(frameCount / (millisecond / 1000));
 }
 var mousePos;
-
+var mouse = false;
 function mouseClicked() {
     // mouse clicked, detects mouse press after release
     // this is used for actions where user can cancel by holding the key while moving away from the action button.()
 
     veggieBurgerMenu.clicked();
     messagesArray.forEach(clickItem);
+    mouse = false;
     //btnsArray.forEach(clickItem);
     for (var index in btnsArray) {
         btnsArray[index].clicked();
@@ -241,15 +277,17 @@ function mouseClicked() {
 
 function mousePressed() {
     // this  function is called as the mouse is press, before release
-    mousePos = createVector(mouseX, mouseY);
-    print(mousePos);
+    mouse =true;
+    mousePos.x = mouseX;mousePos.y = mouseY;
+
 }
 
 function mouseDragged() {
 //  if(dist(mouseX,mouseY,canvas.x,canvas.y)<canvas.ws*1000){
     if (mouseX > canvas.x - canvas.ws*1920/2 && mouseY > canvas.y - canvas.hs*1080/2 && mouseX < canvas.x + (canvas.ws * 1920)/2 && mouseY < canvas.y + (canvas.hs * 1080)/2) {
-        canvas.drag.x -= (mousePos.x - mouseX);
-        canvas.drag.y -= (mousePos.y - mouseY);
+        //canvas.drag.x -= (mousePos.x - mouseX);
+        //canvas.drag.y -= (mousePos.y - mouseY);
+        canvas.elements[canvas.elements.length-1].forEach(x=>x.drag((mousePos.x - mouseX),(mousePos.y - mouseY)));
         mousePos.x = mouseX;
         mousePos.y = mouseY;
         cursor(grab);
@@ -264,13 +302,60 @@ function keyPressed() {
 
 
 }
+function KeyPress(e) {
+  //ref:http://jsfiddle.net/29sVC/
+  //ref:http://keycode.info/
+      var evtobj = window.event? event : e
+      if (evtobj.keyCode == 90 && evtobj.ctrlKey&&OSName =="Windows") alert("Ctrl+z");
+      if (evtobj.keyCode == 90 && evtobj.keyCode==91&&OSName =="Mac/iOS") alert("Cmd+z");
+}
 
+document.onkeydown = KeyPress;
+
+window.onresize = function() {
+    // centers canvas
+    canvas.x = ((width / 2) - (canvas.ws * canvasWidth) / 2) + canvas.drag.x;
+    canvas.y = ((height / 2) - (canvas.hs * canvasHeight) / 2) + canvas.drag.y;
+    //keeps zoom bar & btns in its postion during window rescaling
+    zoom.x = width - 250;
+    zoom.y = height - 30;
+    btnsArray.zoomOut.x = width - 270;
+    btnsArray.zoomOut.y = height - 26;
+    btnsArray.zoomIn.x = width - 30;
+    btnsArray.zoomIn.y = height - 26;
+    btnsArray.settings.x = width -30;
+    btnsArray.fullScreen.y = height - 26;
+    btnsArray.fullScreen.x = width - 310;
+};
 function undo() {
 
+
+  if(canvas.elements.length === 0){
+    btnsArray.undo.enabled = false;
+    btnsArray.redo.enabled = true;
+  }else{
+  redos.push(canvas.elements.pop());
+  }
+
+  if(canvas.elements.length === 0){
+    btnsArray.undo.enabled = false;
+    btnsArray.redo.enabled = true;
+  }
 }
 
 function redo() {
 
+  if(redos.length === 0){
+    btnsArray.undo.enabled = true;
+    btnsArray.redo.enabled = false;
+  }else{
+  canvas.elements.push(redos.pop());
+  }
+
+  if(redos.length === 0){
+    btnsArray.undo.enabled = true;
+    btnsArray.redo.enabled = false;
+  }
 }
 
 function cut() {

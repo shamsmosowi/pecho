@@ -21,6 +21,18 @@
                 e.preventDefault();
             }
         }, false);
+        // prevent defualt right click menu, ref:http://stackoverflow.com/questions/4909167/how-to-add-a-custom-right-click-menu-to-a-webpage
+        if (document.addEventListener) {
+        document.addEventListener('contextmenu', function(e) {
+            alert("You've tried to open context menu"); //here you draw your own menu
+          //e.preventDefault();
+        }, false);
+    } else {
+        document.attachEvent('oncontextmenu', function() {
+            alert("You've tried to open context menu");
+            window.event.returnValue = false;
+        });
+    }
     </script>
     <script src='//vws.responsivevoice.com/v/e?key=tkBGYCpc'></script>
     <script src="JS/libraries/p5.dom.js" type="text/javascript"></script>

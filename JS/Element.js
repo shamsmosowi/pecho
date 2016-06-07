@@ -1,6 +1,8 @@
 class Element {
-  constructor(x, y, s,r){
+
+  constructor(x, y, s,r,selected){
     //this.vertices = vertices;
+    this.selected = selected;
     this.x = x || 0;
     this.y = y || 0;
     this.scale = s || 1;
@@ -16,9 +18,9 @@ class Element {
     clicked() {
 
     }
-    drag(dx, dy) {this.x += dx;this.y += dy;
-      print(this.x,this.y);
+    drag(dx, dy) {
+      if(this.selected){this.x -= dx;this.y -= dy;}
     }
-    
+
 
 }

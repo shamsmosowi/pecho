@@ -18,7 +18,7 @@ class Slider {
         this.cx = map(this.value, this.startValue, this.endValue, 0, this.w);
         fill('#3D6889');
         strokeWeight(1.5);
-        stroke(70)
+        stroke(70);
         ellipse(this.cx, this.h / 2, this.h * 2, this.h * 2);
         pop();
     }

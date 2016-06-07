@@ -20,7 +20,7 @@ function MessageBar(message, type) {
     this.fillColor = type[0];
     this.strokeColor = type[1];
     this.textColor = type[2];
-    this.duration = this.messageText.length * 400;
+    this.duration = this.messageText.length * 150;
     this.radius = 25;
     this.visible = true;
     this.draw = function() {

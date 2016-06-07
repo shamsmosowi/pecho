@@ -1,7 +1,10 @@
 class Shape extends Element{
-  constructor(x, y, s,r,v){
-    super(x,y,s,r);
+  constructor(x, y, s,r,selected,v,colour){
+    super(x,y,s,r,selected);
     this.vertices = v;
+    this.hue = colour.h;
+    this.saturation = colour.s;
+    this.brigthness = colour.b;
   }
   draw(){
     //TODO:join shape and Graphic draw functions boilers
@@ -10,7 +13,7 @@ class Shape extends Element{
       scale(this.scale);
       push();
       translate(this.x,this.y);
-      fill(0);
+      fill(this.hue,this.saturation,this.brigthness);
       beginShape();
       this.vertices.forEach(x=> vertex(x.x,x.y));
       endShape(CLOSE);
