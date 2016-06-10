@@ -1,5 +1,5 @@
 function VeggieBurgerMenu() {
-    /* this Veggie Burger menu is 100% animal meat free
+    /* this Veggie Burger menu is 100% animal meat free.
      it controls the top-left corner minute
      it allows users to access save, share and print, download, other funtionalities.
      a,b,c variables are used to create the menu icon
@@ -16,8 +16,8 @@ function VeggieBurgerMenu() {
     this.backgroundf = 0;
     this.spoke =false;
     this.items.push(new MenuItem({
-        x: 80,
-        y: 25,
+        x: 50,
+        y: 80,
         w: 70,
         h: 70,
         s: 1.2,
@@ -28,8 +28,8 @@ function VeggieBurgerMenu() {
         call: function() {}
     }, 1, 3));
     this.items.push(new MenuItem({
-        x: 80,
-        y: 25,
+        x: 50,
+        y: 160,
         w: 70,
         h: 70,
         s: 1.2,
@@ -40,8 +40,8 @@ function VeggieBurgerMenu() {
         call: function() {}
     }, 2, 3));
     this.items.push(new MenuItem({
-        x: 80,
-        y: 25,
+        x: 50,
+        y: 240,
         w: 70,
         h: 70,
         s: 1.2,
@@ -74,6 +74,8 @@ function VeggieBurgerMenu() {
 
 
         noFill();
+        push();
+        scale(1.4);
         beginShape();
 
         vertex(this.a[0], this.a[1]);
@@ -90,9 +92,11 @@ function VeggieBurgerMenu() {
         vertex(this.c[2], this.c[3]);
         vertex(this.c[4], this.c[5]);
         endShape();
+        pop()
     };
     this.clicked = function() {
-        if (mouseX < this.a[4] && mouseY < this.c[5] && !this.opened) {
+
+        if (mouseX < this.a[4]*1.4 && mouseY < this.c[5]*1.4 && !this.opened) {
             //changes the state of the button
             this.af = [10, 10, 20, 20, 30, 10];
             this.bf = [20, 20, 20, 20, 20, 20];
@@ -102,7 +106,7 @@ function VeggieBurgerMenu() {
             this.opened = true;
 
 
-        } else if (mouseX < this.a[4] && mouseY < this.c[5] && this.opened) {
+        } else if (mouseX < this.a[4]*1.4 && mouseY < this.c[5]*1.4 && this.opened) {
             this.af = [10, 10, 20, 10, 30, 10];
             this.bf = [10, 20, 20, 20, 30, 20];
             this.cf = [10, 30, 20, 30, 30, 30];

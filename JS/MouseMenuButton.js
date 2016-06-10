@@ -9,9 +9,6 @@ class MouseMenuButton extends Button{
         use r to calculate the position of the button using the polar cartian to polar
         x = r × cos( θ )
         y = r × sin( θ )
-
-
-
     */
     this.c = (options.w + padding)*n;
     this.r = this.c/(2*3.1415);
@@ -20,6 +17,6 @@ class MouseMenuButton extends Button{
     this.x = this.r × sin(this.theta);
   }
   //TODO:animation, click trigered actions
-  
+
 
 }

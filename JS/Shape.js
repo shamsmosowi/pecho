@@ -4,19 +4,35 @@ class Shape extends Element{
     this.vertices = v;
     this.hue = colour.h;
     this.saturation = colour.s;
-    this.brigthness = colour.b;
+    this.brightness = colour.b;
   }
   draw(){
     //TODO:join shape and Graphic draw functions boilers
       push();
-      rotate(radians(this.rotation));
-      scale(this.scale);
-      push();
+
       translate(this.x,this.y);
-      fill(this.hue,this.saturation,this.brigthness);
+      push();
+
+        scale(this.scale);
+      push();
+      rotate(radians(this.rotation));
+      fill(this.hue,this.saturation,this.brightness);
       beginShape();
       this.vertices.forEach(x=> vertex(x.x,x.y));
       endShape(CLOSE);
+      if(this.selected){
+
+        /*
+
+        //unefficent, reduces fps to ~11(39fps without it)
+
+        strokeWeight(1);
+        beginShape();
+        this.vertices.forEach(x=> {vertex(x.x,x.y);fill('#2D3E50');noStroke();rect(x.x,x.y,3,3)});
+          noFill();stroke('#2D3E50');
+        endShape(CLOSE);*/
+      }
+      pop();
       pop();
       pop();
   }

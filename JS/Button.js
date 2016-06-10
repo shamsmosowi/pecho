@@ -1,7 +1,7 @@
 var voiceSpeaker = "UK English Male";//TODO:array of different voices
 var voiceEnable = false;
 class Button {
-    constructor(options) {
+    constructor(options,mousePos) {
         this.x = options.x;
         this.y = options.y;
         this.w = options.w;
@@ -22,6 +22,7 @@ class Button {
         this.name = options.name;
         this.call = options.call;
               this.spoke = false;
+              this.pos = mousePos||0;
     }
     draw() {
         push();
@@ -33,7 +34,7 @@ class Button {
             this.rotation = 0;
         }
         rotate(radians(this.rotation));
-        this.animateHover(dist(mouseX, mouseY, this.x, this.y) < this.w / 2);
+        this.animateHover(dist(mouseX, mouseY, this.pos.x +this.x, this.pos.y +this.y) < this.w / 2);
         noStroke();
 
         fill(0, 0, 92, 100);
@@ -129,12 +130,16 @@ class Button {
 
     }
     clicked() {
-        if (dist(mouseX, mouseY, this.x, this.y) < this.w / 2 && this.enabled) {
+
+        if (dist(mouseX, mouseY, this.pos.x+this.x, this.pos.y+this.y) < this.w / 2 && this.enabled) {
             this.animateRotation();
             this.animateScale();
+      
             if (this.success) {
+
                 sendMessage(this.success, messageType.complete);
             }
+
             return this.call();
         } else if (dist(mouseX, mouseY, this.x, this.y) < this.w / 2 && !this.enabled) {
             if (this.fail) {

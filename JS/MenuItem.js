@@ -7,27 +7,37 @@ class MenuItem extends Button {
         this.scalef = 1;
         this.rotation = 0;
         this.scale = 0;
-        this.m = map(this.i, 0, this.nItems, 0, 1);
-        this.fillColor = color(this.m * 360, 166, 255);
+        this.m = map(this.i, 0, 2, 0, 360);
+        this.fillColor = color(this.m, 100, 100);
         this.x = 0;
         this.y = 0;
-        this.xf = 20;
-        this.yf = 40 + this.m * 120;
+        this.xf = options.x;
+        this.yf = options.y;
     }
     draw() {
         noStroke();
+
         push();
 
-        translate(this.x, 30 + this.y);
+        translate(this.x,this.y);
         push();
         scale(this.scale);
         fill(this.fillColor);
-        ellipse(this.x, this.y, this.w, this.h);
+        ellipse(0, 0, this.w, this.h);
+          this.animateHover(dist(mouseX, mouseY, this.x, this.y) < this.w / 2);
+        push();
+        imageMode(CENTER);
+        scale(this.w * 0.7 / this.img.width, this.h * 0.7 / this.img.height);
+        if (!this.enabled) {
+            tint(0, 0, 40, 40);
+        }
+        image(this.img);
+        pop();
         pop();
         pop();
 
     }
-    
+
     show() {
         /*x = r × cos( θ )
         y = r × sin( θ )*/
@@ -71,5 +81,9 @@ class MenuItem extends Button {
                 target.scale = this.s;
             }).start();
         animate();
+    }
+    clicked(){
+      return;
+
     }
 }

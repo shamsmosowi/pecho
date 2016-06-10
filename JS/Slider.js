@@ -1,5 +1,5 @@
 class Slider {
-    constructor(value, x, y, w, h, start, end) {
+    constructor(value, x, y, w, h, start, end,call) {
         this.x = x;
         this.y = y;
         this.w = w;
@@ -7,6 +7,7 @@ class Slider {
         this.startValue = start;
         this.endValue = end;
         this.value = value;
+        this.update = call;
     }
 
     draw() {
@@ -25,6 +26,7 @@ class Slider {
     drag() {
         if (mouseX > this.x && mouseX < this.w + this.x && mouseY > this.y && mouseY < this.h + this.y) {
             this.value = map(mouseX, this.x, this.x + this.w, this.startValue, this.endValue);
+            this.update();
         }
     }
 
