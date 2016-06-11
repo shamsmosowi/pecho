@@ -5,7 +5,8 @@ class Element {
     this.selected = selected;
     this.x = x || 0;
     this.y = y || 0;
-    this.scale = s || 1;
+    this.scaleX = s.x || 1;
+      this.scaleY = s.y || 1;
     this.rotation = r || 0;}
     draw() {
         noStroke();
@@ -15,15 +16,9 @@ class Element {
 
         pop();
     }
-    clicked() {
-      if(mouseX,mouseY){
 
-      }else{
-        
-      }
-    }
     drag(dx, dy) {
-      if(this.selected){this.x -= dx;this.y -= dy;}
+      if(this.selected){this.x -= dx/(canvas.s);this.y -= dy/(canvas.s);}
     }
 
 

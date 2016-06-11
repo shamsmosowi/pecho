@@ -216,7 +216,7 @@ function setup() {
     btnsArray.fullScreen = fullScreenBtn;
     mousePos = createVector(mouseX, mouseY);
     //noLoop();
-    (elem = document.getElementById("loading")).parentNode.removeChild(elem);
+  (elem = document.getElementById("loading")).parentNode.removeChild(elem);
 
 }
 var drawItem = x => x.draw()
@@ -297,7 +297,7 @@ window.onresize = function() {
 function shapesCall() {
   //console.log(this);
     let mousePos = createVector(mouseX, mouseY);
-  let menubtns = [{name: 'triangle',
+  let menubs = [{name: 'triangle',
           img: btnImgDict.triangle,
           call:function(){
 
@@ -327,9 +327,9 @@ function shapesCall() {
           call:function(){
 
           }
-      }]
+      }];
     //  mouseMenu.pos = createVector(mouseX,mouseY);
-  // mouseMenu.btns = menubtns;
+    mouseMenu.btns = menubs;
 
 
 }

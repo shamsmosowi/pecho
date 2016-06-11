@@ -32,6 +32,7 @@ function undo() {
       btnsArray.undo.enabled = false;
     }else{
     current = undos.pop();
+    btnsArray.redo.enabled = true;
     }
     if(undos.length === 0){
       btnsArray.redo.enabled = true;

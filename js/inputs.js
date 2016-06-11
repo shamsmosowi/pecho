@@ -13,6 +13,7 @@ function mouseClicked() {
     for (var index in btnsArray) {
         btnsArray[index].clicked();
     }
+    current.forEach(x => x.clicked());
 }
 
 function mousePressed() {

@@ -1,14 +1,31 @@
-
+var shapesDict = {};
 var zoom;
 var canvasWidth = 1920;
 var canvasHeight = 1080;
+var circlePoints = 20;
 class Canvas {
     constructor() {
       this.backgroundColour = color('#fff');
+        shapesDict.triangle = [createVector(25, 0), createVector(50, 50), createVector(0, 50)];
+        shapesDict.square = [createVector(0, 0), createVector(50, 0), createVector(50, 50),createVector(0, 50)];
+        //x^2+y^2 = r^2
+        //r = 25
+        //y = sqrt(r^2 - x^2)
+        let circleVertices = []
+         for (var i =0 ; i < 360; i+=(360/circlePoints)) {
+           let xt = 25*cos(radians(i));
+           let yt = 25*sin(radians(i));
+           circleVertices.push(createVector(xt,yt));
+         }
+
+        shapesDict.circle = circleVertices;
         var shapes  = [];
         for (var i = 0; i < 40; i++) {
-          for (var j = 0; j < 40; j++) {
-          var e = new Shape(51*i, 51*j, 1, 0, true,[ createVector(25, 0), createVector(50, 50), createVector(0, 50)],{h:0,s:70,b:100});
+          for (var j = 0; j < 10; j++) {
+            let s = floor(random(3));
+            if(s ===0){var e = new Shape(51*i, 51*j, createVector(1,1), 0, false,shapesDict.triangle,{h:0,s:70,b:100});}
+            if(s ===1){var e = new Shape(51*i, 51*j, createVector(1,1), 0, false,shapesDict.square,{h:0,s:70,b:100});}
+            if(s ===2){var e = new Shape(51*i, 51*j, createVector(1,1), 0, false,shapesDict.circle,{h:0,s:70,b:100});}
           current.push(e);
         }
         }
@@ -19,6 +36,7 @@ class Canvas {
         this.y = (height/2)+ this.drag.y;
         this.ws = (0.9 * width * this.scale) / canvasWidth;
         this.hs = (0.9 * height * this.scale) / canvasHeight;
+        this.s = 1;
         zoom = new Slider(1, width - 250, height - 31, 200, 10, 0.05, 2,function(){rescaleCanvas()});
 
     }
@@ -32,21 +50,22 @@ class Canvas {
         }
         push();
         translate(this.x, this.y); //centering the canvas
-
+        push()
         if (this.ws < this.hs) {
-            scale(this.ws);
+          this.s = this.ws;
         } else {
-            scale(this.hs);
+            this.s = this.hs;
+
         }
-        //  scale(this.ws,this.hs);
+     scale(this.s);
         noStroke();
         fill(this.backgroundColour);
         rectMode(CENTER);
         rect(0, 0, canvasWidth, canvasHeight);
         this.drawElements();
         pop();
-        push();
         pop();
+
 
         zoom.draw();//shows zoom slider
     }
