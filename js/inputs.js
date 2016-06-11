@@ -4,7 +4,8 @@ var mouse = false;
 function mouseClicked() {
     // mouse clicked, detects mouse press after release
     // this is used for actions where user can cancel by holding the key while moving away from the action button.()
-    mouseMenu.clicked();
+    if(mouseMenu.length>0){
+    mouseMenu[mouseMenu.length-1].clicked();}
     veggieBurgerMenu.clicked();
     messagesArray.forEach(clickItem);
     mouse = false;

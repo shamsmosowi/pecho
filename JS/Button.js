@@ -134,13 +134,13 @@ class Button {
         if (dist(mouseX, mouseY, this.pos.x+this.x, this.pos.y+this.y) < this.w / 2 && this.enabled) {
             this.animateRotation();
             this.animateScale();
-      
+
             if (this.success) {
 
                 sendMessage(this.success, messageType.complete);
             }
 
-            return this.call();
+          this.call();
         } else if (dist(mouseX, mouseY, this.x, this.y) < this.w / 2 && !this.enabled) {
             if (this.fail) {
                 sendMessage(this.fail, messageType.alert);

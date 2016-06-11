@@ -16,7 +16,11 @@ class Element {
         pop();
     }
     clicked() {
+      if(mouseX,mouseY){
 
+      }else{
+        
+      }
     }
     drag(dx, dy) {
       if(this.selected){this.x -= dx;this.y -= dy;}

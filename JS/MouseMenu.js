@@ -25,8 +25,8 @@ y = r × sin( θ )
         for (var btns in menubtns) {
             if (menubtns.hasOwnProperty(btns)) {
               console.log(menubtns[btns]);
-              let bx = this.r * cos(radians((360/menubtns.length)*btns));
-              let by = this.r * sin(radians((360/menubtns.length)*btns));
+              let bx = this.pos.x+this.r * cos(radians((360/menubtns.length)*btns));
+              let by = this.pos.y+this.r * sin(radians((360/menubtns.length)*btns));
               let btn = new Button({
         x: bx,
         y: by,
@@ -37,10 +37,10 @@ y = r × sin( θ )
         img: menubtns[btns].img,
         enabled: true,
         name: menubtns[btns].name,
-        call: function(){shapesCall();}
+        call: menubtns[btns].call
 
     },this.pos);
-            this.btns.push(btn);
+            btnsArray[menubtns[btns].name] = btn
             }
 
         }
@@ -49,10 +49,10 @@ y = r × sin( θ )
     }
     draw() {
         if (this.visible) {
-            background(20, this.background);
+            //background(20, this.background);
             push()
             translate(this.pos.x, this.pos.y)
-            this.btns.forEach(drawItem);
+          //  this.btns.forEach(drawItem);
             pop()
         }
     }

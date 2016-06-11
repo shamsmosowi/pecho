@@ -13,7 +13,7 @@ var OSName = "Unknown";
 var backgroundColour;
 var menuDict = {};
 var actions;
-var mouseMenu;
+var mouseMenu=[];
 
 
 function preload() {
@@ -162,7 +162,7 @@ function setup() {
     colorMode(HSB, 360, 100, 100, 100);
     canvas = new Canvas();
     actions = new Actions();
-    mouseMenu = new MouseMenu(createVector(0,0),{});
+    //mouseMenu = new MouseMenu(createVector(0,0),{});
     var zoomInBtn = new Button({
         x: width - 30,
         y: height - 30,
@@ -238,8 +238,8 @@ function draw() {
     noFill();
     strokeWeight(1.5);
     stroke(240, 65, 50, 70);
-    if(mouseMenu.visible){
-      mouseMenu.draw();
+    if(mouseMenu.length>0){
+      mouseMenu[mouseMenu.length-1].draw();
     }
 
     //if(mouse){rect(mousePos.x,mousePos.y,mouseX-mousePos.x,mouseX-mousePos.y);}
@@ -295,9 +295,9 @@ window.onresize = function() {
 
 };
 function shapesCall() {
-  console.log(this);
+  //console.log(this);
     let mousePos = createVector(mouseX, mouseY);
-  let menuBtns = [{name: 'triangle',
+  let menubtns = [{name: 'triangle',
           img: btnImgDict.triangle,
           call:function(){
 
@@ -328,15 +328,17 @@ function shapesCall() {
 
           }
       }]
-  //  mouseMenu.btns = menuBtns;
-    return 5;
+    //  mouseMenu.pos = createVector(mouseX,mouseY);
+  // mouseMenu.btns = menubtns;
+
+
 }
 document.ondblclick = function() {
 
     let mousePos = createVector(mouseX, mouseY);
     let menuBtns = [{name: 'shapes',
             img: btnImgDict.shapes,
-            call:function(){shapesCall();}
+            call:shapesCall
         }, {
             name: 'colors',
             img: btnImgDict.paintPalette,
@@ -356,6 +358,7 @@ document.ondblclick = function() {
 
             }
         }]
-        mouseMenu = new MouseMenu(mousePos,menuBtns);
-        mouseMenu.visible = true;
+        mm = new MouseMenu(mousePos,menuBtns);
+        mouseMenu.push(mm);
+        mouseMenu[mouseMenu.length-1].visible = true;
 }

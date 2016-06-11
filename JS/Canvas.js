@@ -4,14 +4,11 @@ var canvasWidth = 1920;
 var canvasHeight = 1080;
 class Canvas {
     constructor() {
-
       this.backgroundColour = color('#fff');
-
-
         var shapes  = [];
         for (var i = 0; i < 40; i++) {
           for (var j = 0; j < 40; j++) {
-          var e = new Shape(51*i, 51*j, 1, 0, true,[ createVector(0, 0),createVector(50,0), createVector(50, 50), createVector(0, 50)],{h:0,s:70,b:100});
+          var e = new Shape(51*i, 51*j, 1, 0, true,[ createVector(25, 0), createVector(50, 50), createVector(0, 50)],{h:0,s:70,b:100});
           current.push(e);
         }
         }

@@ -68,9 +68,10 @@ pnoise(array,p,minValue,maxValue){
 //perlin noise
 pushToUndos();
 let property = p;
-array.forEach(x=>{x[property] = minValue+(maxValue-minValue)*(noise(minValue,maxValue))});
-
+let index = 0;
+array.forEach(x=>{x[property] = minValue+(maxValue-minValue)*(noise(index));index+=0.1});
 }
+
 }
 function unselectall(){
   current.forEach(x=>x.selected =false);
