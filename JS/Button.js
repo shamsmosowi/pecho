@@ -129,9 +129,9 @@ class Button {
         animate();
 
     }
-    clicked() {
+    clicked(hotKey) {
 
-        if (dist(mouseX, mouseY, this.x,this.y) < this.w / 2 && this.enabled) {
+        if (dist(mouseX, mouseY, this.x,this.y) < this.w / 2 && this.enabled || hotKey) {
             this.animateRotation();
             this.animateScale();
 

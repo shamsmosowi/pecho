@@ -1,9 +1,9 @@
 var messageType = {
     // this is a dictionary of color arrays used to allow for styling the message to indecate the type of different information presented to the user
-    complete: ['#6FBB84', '#91F5AD', '#fff'], //green used for positive
-    tip: ['#4E4EE8', '#4165f0', '#fff'], //blue to give relevent information to the task the user is preforming
+    complete: ['#2ECC71', '#27AE60', '#fff'], //green used for positive
+    tip: ['#3498DB', '#2980B9', '#fff'], //blue to give relevent information to the task the user is preforming
     error: ['#E8352E', '#F06541', '#fff'], //red is used to alert users of actions high consequnce
-    alert: ['#FFED51', '#FFED75', '#000'] //yellow theme, alert minor errors or suggesting changes
+    alert: ['#FFED51', '#F39C12', '#000'] //yellow theme, alert minor errors or suggesting changes
         //TODO: change colours
 };
 var messageTimer = true; //switchs message timer on
@@ -27,7 +27,7 @@ function MessageBar(message, type) {
         push();
         translate(this.x, this.y);
         strokeWeight(1);
-        stroke(color(this.strokeColor));
+        stroke(color(this.fillColor));
         fill(color(this.fillColor));
         rect(0, 0, this.w, this.h, 15, 15, 0, 0);
         textSize(20);

@@ -18,7 +18,7 @@ var waveType = {
     },
     "saw": x => {
         x[actions.property] = actions.min + (actions.max - actions.min) * (actions.index % actions.steps) / actions.steps;
-        actions.index += 1
+        actions.index += 1;
     }
 }
 class Actions {
@@ -41,7 +41,7 @@ class Actions {
         let k = (lastValue - firstValue) / length;
         array.forEach(x => {
             x[property] = firstValue + k * index;
-            index += 1
+            index += 1;
         });
     }
     randomize(array, p, minValue, maxValue) {
@@ -89,10 +89,12 @@ class Actions {
 
 
     paste() {
+
         //  pushes clipboard clone array to current
         //  let clipboardClone = clipboard.forEach(x=>return elementCloner(x));
         let clipboardLength = clipboard.length;
         if (clipboardLength>0) {
+          pushToUndos();
           for(var a = 0;a<clipboardLength;a++){
             current.push(elementCloner(clipboard[a]));
           }
@@ -134,6 +136,7 @@ class Actions {
     cut() {
       let selectedLength = selected().length;
         if(selectedLength>0){
+          pushToUndos();
             clipboard = selected();
             this.delete();
             if(selectedLength>1){

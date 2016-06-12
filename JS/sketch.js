@@ -14,7 +14,7 @@ var backgroundColour;
 var menuDict = {};
 var actions;
 var mouseMenu=[];
-
+var dragSelect;
 
 function preload() {
     // things to load before setup() runs
@@ -23,6 +23,7 @@ function preload() {
 
     });*/
       actions = new Actions();
+      dragSelect = new DragSelect();
     backgroundColour = color('#d0d0d0');
     if (window.navigator.userAgent.indexOf("Windows")) OSName = "Windows";
     if (window.navigator.userAgent.indexOf("Mac") != -1) OSName = "Mac/iOS";
@@ -227,7 +228,7 @@ function draw() {
     millisecond = millis();
     background(backgroundColour);
     canvas.draw();
-    messagesArray.forEach(drawItem); //loops through the array to show messages
+    dragSelect.draw();
     //btnsArray.forEach(drawItem);
     for (var index in btnsArray) {
         btnsArray[index].draw();
@@ -240,7 +241,7 @@ function draw() {
     if(mouseMenu.length>0){
       mouseMenu[mouseMenu.length-1].draw();
     }
-
+    messagesArray.forEach(drawItem); //loops through the array to show messages
     //if(mouse){rect(mousePos.x,mousePos.y,mouseX-mousePos.x,mouseX-mousePos.y);}
 }
 
