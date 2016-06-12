@@ -22,7 +22,7 @@ function preload() {
         console.log('Listening to port:  ' + 3000);
 
     });*/
-
+      actions = new Actions();
     backgroundColour = color('#d0d0d0');
     if (window.navigator.userAgent.indexOf("Windows")) OSName = "Windows";
     if (window.navigator.userAgent.indexOf("Mac") != -1) OSName = "Mac/iOS";
@@ -89,9 +89,9 @@ function preload() {
         enabled: 1,
         name: "copy",
         call: function() {
-            copy();
+            actions.copy();
         },
-        success: "selected element/s were copied",
+
         fail: "select an element to copy"
     },createVector(0,0));
     btnsArray.copy = copyBtn;
@@ -106,9 +106,8 @@ function preload() {
         enabled: 1,
         name: "cut",
         call: function() {
-            cut();
+            actions.cut();
         },
-        success: "selected element/s were cut",
         fail: "select an element to cut"
     },createVector(0,0));
     btnsArray.cut = cutBtn;
@@ -123,9 +122,8 @@ function preload() {
         enabled: 1,
         name: "paste",
         call: function() {
-            paste();
+            actions.paste();
         },
-        success: "clipboard items were pasted",
         fail: "clipboard is empty"
     },createVector(0,0));
     btnsArray.paste = pasteBtn;
@@ -161,7 +159,7 @@ function setup() {
 
     colorMode(HSB, 360, 100, 100, 100);
     canvas = new Canvas();
-    actions = new Actions();
+
     //mouseMenu = new MouseMenu(createVector(0,0),{});
     var zoomInBtn = new Button({
         x: width - 30,
@@ -211,6 +209,7 @@ function setup() {
             canvas.drag.x = 0;
             canvas.drag.y = 0;
             zoom.value = 1;
+            rescaleCanvas();
         }
     },createVector(0,0));
     btnsArray.fullScreen = fullScreenBtn;

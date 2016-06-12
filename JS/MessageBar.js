@@ -1,5 +1,5 @@
 var messageType = {
-    // this enum is used to allow for styling the message to indecate the type of different information presented to the user
+    // this is a dictionary of color arrays used to allow for styling the message to indecate the type of different information presented to the user
     complete: ['#6FBB84', '#91F5AD', '#fff'], //green used for positive
     tip: ['#4E4EE8', '#4165f0', '#fff'], //blue to give relevent information to the task the user is preforming
     error: ['#E8352E', '#F06541', '#fff'], //red is used to alert users of actions high consequnce

@@ -54,7 +54,7 @@ class Shape extends Element{
       //
         if(dist(mouseX,mouseY,canvas.x+((this.x+this.cx-canvasWidth/2)*canvas.s),canvas.y+((this.y+this.cy-canvasHeight/2)*canvas.s))<25*Math.sqrt(pow(this.scaleX*canvas.s,2)+pow(this.scaleY*canvas.s,2)))
         {
-
+          
         this.selected =true;
     }else{
 

@@ -18,7 +18,7 @@ class Element {
     }
 
     drag(dx, dy) {
-      if(this.selected){this.x -= dx/(canvas.s);this.y -= dy/(canvas.s);}
+      this.x -= dx/(canvas.s);this.y -= dy/(canvas.s);
     }
 
 
