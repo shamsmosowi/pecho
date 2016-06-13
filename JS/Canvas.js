@@ -5,27 +5,28 @@ var canvasHeight = 1080;
 var circlePoints = 20;
 class Canvas {
     constructor() {
+      this.movable = false;
       this.backgroundColour = color('#fff');
-        shapesDict.triangle = [createVector(25, 0), createVector(50, 50), createVector(0, 50)];
-        shapesDict.square = [createVector(0, 0), createVector(50, 0), createVector(50, 50),createVector(0, 50)];
+        //shapesDict.triangle = [createVector(25, 0), createVector(50, 50), createVector(0, 50)];
+        //shapesDict.square = [createVector(0, 0), createVector(50, 0), createVector(50, 50),createVector(0, 50)];
+        shapesDict.triangle =polygon(3) ;
+        shapesDict.square = polygon(4);
+        shapesDict.pentagon = polygon(5);
+        shapesDict.hexagon = polygon(6);
+        shapesDict.septagon = polygon(7);
         //x^2+y^2 = r^2
         //r = 25
         //y = sqrt(r^2 - x^2)
-        let circleVertices = []
-         for (var i =0 ; i < 360; i+=(360/circlePoints)) {
-           let xt = 25*cos(radians(i));
-           let yt = 25*sin(radians(i));
-           circleVertices.push(createVector(xt,yt));
-         }
 
-        shapesDict.circle = circleVertices;
+
+        shapesDict.circle = polygon(21)
         var shapes  = [];
         for (var i = 0; i < 40; i++) {
           for (var j = 0; j < 10; j++) {
             let s = floor(random(3));
-            if(s ===0){var e = new Shape(51*i, 51*j, createVector(1,1), 0, false,shapesDict.triangle,{h:0,s:70,b:100});}
-            if(s ===1){var e = new Shape(51*i, 51*j, createVector(1,1), 0, false,shapesDict.square,{h:0,s:70,b:100});}
-            if(s ===2){var e = new Shape(51*i, 51*j, createVector(1,1), 0, false,shapesDict.circle,{h:0,s:70,b:100});}
+            if(s ===0){var e = new Shape(51*i, 51*j, createVector(1,1), 0, false,shapesDict.septagon,{h:0,s:70,b:100});}
+            if(s ===1){var e = new Shape(51*i, 51*j, createVector(1,1), 0, false,shapesDict.hexagon,{h:0,s:70,b:100});}
+            if(s ===2){var e = new Shape(51*i, 51*j, createVector(1,1), 0, false,shapesDict.pentagon,{h:0,s:70,b:100});}
           current.push(e);
         }
         }
@@ -49,7 +50,7 @@ class Canvas {
             cursor(ARROW);
         }
         push();
-        translate(this.x, this.y); //centering the canvas
+        translate(this.x+this.drag.x, this.y+this.drag.y); //centering the canvas
         push()
         if (this.ws < this.hs) {
           this.s = this.ws;
@@ -75,6 +76,12 @@ class Canvas {
       current.forEach(drawItem);
 
       pop();
+    }
+    move(dx, dy) {
+      this.drag.x -=dx*this.s;
+      this.drag.y -=dy*this.s;
+      //console.log(dx,dy);
+      //this.drag.x -= dx/(this.s);this.drag.y -= dy/;
     }
 
 

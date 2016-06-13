@@ -54,7 +54,6 @@ class Actions {
     alternate(array, p, minValue, maxValue, steps, type) {
         //use a sine function to alternate value
         //requires a min and max, and step size(period)
-
         pushToUndos();
         this.min = minValue;
         this.max = maxValue;
@@ -79,12 +78,39 @@ class Actions {
 
 
     }
-    repeatX(array, padding) {
+    repeat1D(array, paddingXY,nIter) {
+      // is vector used to postion clones in desired direction
+      var newArray = [];
+      for(var i=0;i<nIter;i++){
+        for (var a = 0; a < array.length; a++) {
+            newArray.push(elementCloner(array[a]));
+        }
+      }
+      this.padding(newArray,'x',paddingXY.x);
+      this.padding(newArray,'y',paddingXY.y);
+      return newArray;
+    }
+    repeat2D(array,padding,spacing,nIter){
+      //padding is a vector
+      //nIter is a vector
+      let sArray = array;
+      let newArray = [];
+      let paddingXY = padding;
+      for(var i=0;i<nIter.y;i++){
+        let tempArray  = repeat1D(sArray,padding,nIter.x);
+          this.padding(tempArray,'y',spacing.y);
+          moveItem(tempArray,newArray,tempArray.length);
+      }
+      moveItem(newArray,current,newArray.length);
+      //for (var i = 0; i < sArray.length; i++) {sArray[i]}
 
 
     }
     delete() {
+      if(selected().length>1){
+          pushToUndos();
         current = current.filter(x => !x.selected);
+      }
     }
 
 
@@ -96,7 +122,9 @@ class Actions {
         if (clipboardLength>0) {
           pushToUndos();
           for(var a = 0;a<clipboardLength;a++){
-            current.push(elementCloner(clipboard[a]));
+              let newElement = elementCloner(clipboard[a]);
+              newElement.selected = true;
+              current.push(newElement);
           }
 
           if(clipboardLength>1){
@@ -140,6 +168,7 @@ class Actions {
             clipboard = selected();
             this.delete();
             if(selectedLength>1){
+
             sendMessage(selectedLength+" selected elements were cut",messageType.complete);
           }else{
             sendMessage("Selected element was cut",messageType.complete);
@@ -209,7 +238,7 @@ function elementCloner(obj) {
     } else if (obj instanceof Graphic) {
         //let eGraphic = new Graphic(60, 60, 1, 0, true,[createVector(75, 50)],{h:0,s:70,b:100});
         return (Object.assign(eGraphic, obj));
-    }
+    }//TODO:text element state
 }
 
 function moveItem(fromArray, toArray, n) {

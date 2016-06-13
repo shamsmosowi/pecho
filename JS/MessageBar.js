@@ -7,6 +7,18 @@ var messageType = {
         //TODO: change colours
 };
 var messageTimer = true; //switchs message timer on
+
+
+function sendMessage(message, type) {
+    //function used to send users messages
+
+    var messageBar = new MessageBar(message, type);
+    messagesArray.push(messageBar);
+    messageBar.show();
+}//messageBar api
+
+
+
 function MessageBar(message, type) {
     // a class for alerting users of problems, notify for any changes, and provides relevent tips related to the context of what the user is creating(by observing selected elements or tools being used)
     // takes a string and message enum value, creates message bar with a dynamic width depending on message length and buttons buttons

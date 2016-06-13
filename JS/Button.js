@@ -37,9 +37,9 @@ class Button {
         this.animateHover(dist(mouseX, mouseY, this.pos.x +this.x, this.pos.y +this.y) < this.w / 2);
         noStroke();
 
-        fill(0, 0, 92, 100);
+        fill('#ECF0F1');
         ellipse(0, 0, this.w, this.h);
-        fill(0, 0, 96, 100);
+      //  fill(0, 0, 96, 100);
         ellipse(0, 0, this.hw, this.hh);
         push();
         imageMode(CENTER);
@@ -134,13 +134,11 @@ class Button {
         if (dist(mouseX, mouseY, this.x,this.y) < this.w / 2 && this.enabled || hotKey) {
             this.animateRotation();
             this.animateScale();
-
             if (this.success) {
-
                 sendMessage(this.success, messageType.complete);
             }
-
           this.call();
+
         } else if (dist(mouseX, mouseY, this.x, this.y) < this.w / 2 && !this.enabled) {
             if (this.fail) {
                 sendMessage(this.fail, messageType.alert);

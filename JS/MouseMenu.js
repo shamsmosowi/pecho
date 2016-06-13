@@ -9,7 +9,6 @@ menuDict.main = [1, 2, 3, 4];
 menuDict.shapes = [1, 2, 3, 4, 5];
 console.log(menuDict.shapes);
 */
-
 /*
 circumference of the mouse menu = button(width+padding)*n(number of buttons);
 circumference = 2*pi*radius
@@ -18,15 +17,16 @@ r = c/2*pi
 use r to calculate the position of the button using the polar cartian to polar
 x = r × cos( θ )
 y = r × sin( θ )
-*/      this.btns = [];
+*/
+        this.mbtns = [];
         this.btnWidth = 70;
         this.padding = 15;
         this.r = ((this.padding+this.btnWidth)*menubtns.length)/(2*PI);
-        for (var btns in menubtns) {
-            if (menubtns.hasOwnProperty(btns)) {
-              console.log(menubtns[btns]);
-              let bx = this.pos.x+this.r * cos(radians((360/menubtns.length)*btns));
-              let by = this.pos.y+this.r * sin(radians((360/menubtns.length)*btns));
+        for (var i = 0; i< menubtns.length;i++) {
+
+
+              let bx = this.pos.x+this.r * cos(radians((360/menubtns.length)*i));
+              let by = this.pos.y+this.r * sin(radians((360/menubtns.length)*i));
               let btn = new Button({
         x: bx,
         y: by,
@@ -34,14 +34,14 @@ y = r × sin( θ )
         h: this.btnWidth,
         s: 1.1,
         r: 0,
-        img: menubtns[btns].img,
+        img: menubtns[i].img,
         enabled: true,
-        name: menubtns[btns].name,
-        call: menubtns[btns].call
+        name: menubtns[i].name,
+        call: menubtns[i].call
 
     },this.pos);
-            btnsArray[menubtns[btns].name] = btn
-            }
+            this.mbtns.push(btn);
+
 
         }
 
@@ -49,11 +49,12 @@ y = r × sin( θ )
     }
     draw() {
         if (this.visible) {
-            //background(20, this.background);
-            push()
-            translate(this.pos.x, this.pos.y)
-          //  this.btns.forEach(drawItem);
-            pop()
+           background(20, this.background);
+          //  push()
+            //translate(this.pos.x, this.pos.y)
+           this.mbtns.forEach(drawItem);
+
+          //  pop()
         }
     }
     doubleClicked() {
@@ -69,7 +70,7 @@ y = r × sin( θ )
     //TODO:add animations
     clicked(){
 
-      this.btns.forEach(clickItem);
+      this.mbtns.forEach(clickItem);
     }
 
 }

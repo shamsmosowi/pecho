@@ -1,3 +1,15 @@
+function polygon(sides){
+//polygon creates a shape with n sides, used to create different geometetric shapes
+  let polygonVertices = []
+   for (var i =0 ; i < 360; i+=(360/sides)) {
+     let xt = 25*cos(radians(i));
+     let yt = 25*sin(radians(i));
+     polygonVertices.push(createVector(xt,yt));
+   }
+      return polygonVertices
+}
+
+
 class Shape extends Element{
   constructor(x, y, s,r,selected,v,colour){
     super(x,y,s,r,selected);
@@ -44,17 +56,9 @@ class Shape extends Element{
       //ellipse(this.x+this.cx,this.y+this.cy,25,25);
   }
   clicked() {
-    //-canvasWidth/2,-canvasHeight/2
-    //canvas.s;
-
-    //if(dist(mouseX,mouseY,this.x+this.cx-((canvasWidth/2)*canvas.s),this.y+this.cy-((canvasHeight/2)*canvas.s))<50){
-//,if(dist(mouseX,mouseY,canvas.x+((this.x+this.cx-canvasWidth/2)*canvas.s),((canvas.y+this.y)*canvas.s)+this.cy-canvasHeight/2)<25){
-
-      //if(dist(mouseX,mouseY,canvas.x+((this.x+this.cx-canvasWidth/2)*canvas.s),canvas.y+((this.y+this.cy-canvasHeight/2)*canvas.s))<25*canvas.s){
-      //
         if(dist(mouseX,mouseY,canvas.x+((this.x+this.cx-canvasWidth/2)*canvas.s),canvas.y+((this.y+this.cy-canvasHeight/2)*canvas.s))<25*Math.sqrt(pow(this.scaleX*canvas.s,2)+pow(this.scaleY*canvas.s,2)))
         {
-          
+
         this.selected =true;
     }else{
 

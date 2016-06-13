@@ -16,6 +16,21 @@ class MouseMenuButton extends Button{
     this.x = this.r × cos(this.theta);//check for radians
     this.x = this.r × sin(this.theta);
   }
+  click(){
+  this.call();
+    if (dist(mouseX, mouseY, this.x,this.y) < this.w / 2 && this.enabled || hotKey) {
+        this.animateRotation();
+        this.animateScale();
+        if (this.success) {
+            sendMessage(this.success, messageType.complete);
+        }
+    //  this.call();
+    } else if (dist(mouseX, mouseY, this.x, this.y) < this.w / 2 && !this.enabled) {
+        if (this.fail) {
+            sendMessage(this.fail, messageType.alert);
+        }
+    }
+  }
   //TODO:animation, click trigered actions
 
 

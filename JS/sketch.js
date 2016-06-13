@@ -24,12 +24,11 @@ function preload() {
     });*/
       actions = new Actions();
       dragSelect = new DragSelect();
-    backgroundColour = color('#d0d0d0');
+    backgroundColour = color('#BDC3C7');
     if (window.navigator.userAgent.indexOf("Windows")) OSName = "Windows";
     if (window.navigator.userAgent.indexOf("Mac") != -1) OSName = "Mac/iOS";
     if (window.navigator.userAgent.indexOf("X11") != -1) OSName = "UNIX";
     if (window.navigator.userAgent.indexOf("Linux") != -1) OSName = "Linux";
-    console.log(OSName);
     veggieBurgerMenu = new VeggieBurgerMenu();
     grab = loadImage("assests/cursors/grab.png");
     let imgsArray = ['fullScreen', 'invite', 'download', 'delete', 'undo', 'redo', 'cut', 'copy', 'zoomIn',
@@ -260,12 +259,7 @@ function animate() {
     TWEEN.update();
 }
 
-function sendMessage(message, type) {
-    //function used to send users messages
-    var messageBar = new MessageBar(message, type);
-    messagesArray.push(messageBar);
-    messageBar.show();
-}
+
 
 function showFrameRate() {
     //this function is for performance testing only, remove preRelease;
@@ -321,20 +315,16 @@ function shapesCall() {
           call:function(){
 
           }
-      },{
-          name: 'circle',
-          img: btnImgDict.circle,
-          call:function(){
-
-          }
       }];
     //  mouseMenu.pos = createVector(mouseX,mouseY);
-    mouseMenu.btns = menubs;
+    let mb = new MouseMenu(mousePos,menubs);
+    //mouseMenu.pop();
+    mouseMenu.push(mb);
+    mouseMenu[mouseMenu.length-1].visible = true;
 
 
 }
 document.ondblclick = function() {
-
     let mousePos = createVector(mouseX, mouseY);
     let menuBtns = [{name: 'shapes',
             img: btnImgDict.shapes,
