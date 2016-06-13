@@ -13,7 +13,7 @@ var OSName = "Unknown";
 var backgroundColour;
 var menuDict = {};
 var actions;
-var mouseMenu=[];
+var mouseMenu = [];
 var dragSelect;
 
 function preload() {
@@ -22,8 +22,8 @@ function preload() {
         console.log('Listening to port:  ' + 3000);
 
     });*/
-      actions = new Actions();
-      dragSelect = new DragSelect();
+    actions = new Actions();
+    dragSelect = new DragSelect();
     backgroundColour = color('#BDC3C7');
     if (window.navigator.userAgent.indexOf("Windows")) OSName = "Windows";
     if (window.navigator.userAgent.indexOf("Mac") != -1) OSName = "Mac/iOS";
@@ -34,16 +34,17 @@ function preload() {
     let imgsArray = ['fullScreen', 'invite', 'download', 'delete', 'undo', 'redo', 'cut', 'copy', 'zoomIn',
         'zoomOut', 'paste', 'settings', 'bucket', 'shapes', 'polygon', 'circle', 'paintPalette', 'roundSquare',
         'borderedSquare', 'noFillSquare', 'square', 'horizontalCenterAlignment', 'leftAlignment', 'rightAlignment',
-        'verticalCenterAlignment','topAlignment','bottomAlignment','rotate','scale','triangle','pencil','pen','spiral',
-        'mirrorVertically','mirrorVertically','mirrorHorizontally','flipHorizontally','mirrorVertically','mirrorHorizontally',
-        'eyedropper','crop','text','cube'];
+        'verticalCenterAlignment', 'topAlignment', 'bottomAlignment', 'rotate', 'scale', 'triangle', 'pencil', 'pen', 'spiral',
+        'mirrorVertically', 'mirrorVertically', 'mirrorHorizontally', 'flipHorizontally', 'mirrorVertically', 'mirrorHorizontally',
+        'eyedropper', 'crop', 'text', 'cube'
+    ];
     for (var i = 0; i < imgsArray.length; i++) {
         btnImgDict[imgsArray[i]] = loadImage('assests/buttons/theme1/' + imgsArray[i] + '.png')
     }
 
 
     veggieBurgerMenu = new VeggieBurgerMenu();
-
+//Creating buttons
     var undoBtn = new Button({
         x: 80,
         y: 25,
@@ -59,7 +60,7 @@ function preload() {
         },
         success: "pervious action was undone",
         fail: "there is no action history"
-    },createVector(0,0));
+    }, createVector(0, 0));
     btnsArray.undo = undoBtn;
     var redoBtn = new Button({
         x: 130,
@@ -76,7 +77,7 @@ function preload() {
         },
         success: "pervious action was redone",
         fail: "there is no action to be done"
-    },createVector(0,0));
+    }, createVector(0, 0));
     btnsArray.redo = redoBtn;
     var copyBtn = new Button({
         x: 180,
@@ -93,7 +94,7 @@ function preload() {
         },
 
         fail: "select an element to copy"
-    },createVector(0,0));
+    }, createVector(0, 0));
     btnsArray.copy = copyBtn;
     var cutBtn = new Button({
         x: 230,
@@ -109,7 +110,7 @@ function preload() {
             actions.cut();
         },
         fail: "select an element to cut"
-    },createVector(0,0));
+    }, createVector(0, 0));
     btnsArray.cut = cutBtn;
     var pasteBtn = new Button({
         x: 280,
@@ -125,7 +126,7 @@ function preload() {
             actions.paste();
         },
         fail: "clipboard is empty"
-    },createVector(0,0));
+    }, createVector(0, 0));
     btnsArray.paste = pasteBtn;
     var settingsBtn = new Button({
         x: windowWidth - 30,
@@ -141,15 +142,10 @@ function preload() {
             //shows settings menu
 
         }
-    },createVector(0,0));
+    }, createVector(0, 0));
     btnsArray.settings = settingsBtn;
 
     //TODO:mouseMenu dictionaries, create element menu, shape menu,text menu, image menu,grapgics minute
-
-
-
-
-
 
 
 }
@@ -175,7 +171,7 @@ function setup() {
             zoom.value = zoom.value * 1.1;
             rescaleCanvas();
         }
-    },createVector(0,0));
+    }, createVector(0, 0));
     btnsArray.zoomIn = zoomInBtn;
     var zoomOutBtn = new Button({
         x: width - 270,
@@ -191,7 +187,7 @@ function setup() {
             zoom.value = zoom.value * 0.9;
             rescaleCanvas();
         }
-    },createVector(0,0));
+    }, createVector(0, 0));
     btnsArray.zoomOut = zoomOutBtn;
 
     var fullScreenBtn = new Button({
@@ -211,11 +207,11 @@ function setup() {
             zoom.value = 1;
             rescaleCanvas();
         }
-    },createVector(0,0));
+    }, createVector(0, 0));
     btnsArray.fullScreen = fullScreenBtn;
     mousePos = createVector(mouseX, mouseY);
     //noLoop();
-  (elem = document.getElementById("loading")).parentNode.removeChild(elem);
+    (elem = document.getElementById("loading")).parentNode.removeChild(elem);
 
 }
 var drawItem = x => x.draw()
@@ -237,8 +233,8 @@ function draw() {
     noFill();
     strokeWeight(1.5);
     stroke(240, 65, 50, 70);
-    if(mouseMenu.length>0){
-      mouseMenu[mouseMenu.length-1].draw();
+    if (mouseMenu.length > 0) {
+        mouseMenu[mouseMenu.length - 1].draw();
     }
     messagesArray.forEach(drawItem); //loops through the array to show messages
     //if(mouse){rect(mousePos.x,mousePos.y,mouseX-mousePos.x,mouseX-mousePos.y);}
@@ -262,15 +258,13 @@ function animate() {
 
 
 function showFrameRate() {
-    //this function is for performance testing only, remove preRelease;
+    //this function is for performance testing only, keeps track of preformance effciency
     stroke(2);
     strokeWeight(1);
     textSize(24);
     text(round(frameCount / (millisecond / 1000)) + 'fps', 10, height - 10);
     // print(frameCount / (millisecond / 1000));
 }
-
-
 window.onresize = function() {
     // centers canvas
     canvas.x = ((width / 2) - (canvas.ws * canvasWidth) / 2) + canvas.drag.x;
@@ -286,69 +280,33 @@ window.onresize = function() {
     btnsArray.settings.x = width - 30;
     btnsArray.fullScreen.y = height - 26;
     btnsArray.fullScreen.x = width - 310;
-
 };
-function shapesCall() {
-  //console.log(this);
-    let mousePos = createVector(mouseX, mouseY);
-  let menubs = [{name: 'triangle',
-          img: btnImgDict.triangle,
-          call:function(){
-
-
-          }
-      }, {
-          name: 'square',
-          img: btnImgDict.square,
-          call:function(){
-
-          }
-      },{
-          name: 'polygon',
-          img: btnImgDict.polygon,
-          call:function(){
-
-          }
-      },{
-          name: 'circle',
-          img: btnImgDict.circle,
-          call:function(){
-
-          }
-      }];
-    //  mouseMenu.pos = createVector(mouseX,mouseY);
-    let mb = new MouseMenu(mousePos,menubs);
-    //mouseMenu.pop();
-    mouseMenu.push(mb);
-    mouseMenu[mouseMenu.length-1].visible = true;
-
-
-}
 document.ondblclick = function() {
     let mousePos = createVector(mouseX, mouseY);
-    let menuBtns = [{name: 'shapes',
-            img: btnImgDict.shapes,
-            call:shapesCall
-        }, {
-            name: 'colors',
-            img: btnImgDict.paintPalette,
-            call:function(){
+    let menuBtns = [{
+        name: 'shapes',
+        img: btnImgDict.shapes,
+        call: shapesCall
+    }, {
+        name: 'colors',
+        img: btnImgDict.paintPalette,
+        call: function() {
 
-            }
-        },{
-            name: 'pen',
-            img: btnImgDict.pen,
-            call:function(){
+        }
+    }, {
+        name: 'pen',
+        img: btnImgDict.pen,
+        call: function() {
 
-            }
-        },{
-            name: 'text',
-            img: btnImgDict.text,
-            call:function(){
+        }
+    }, {
+        name: 'text',
+        img: btnImgDict.text,
+        call: function() {
 
-            }
-        }]
-        mm = new MouseMenu(mousePos,menuBtns);
-        mouseMenu.push(mm);
-        mouseMenu[mouseMenu.length-1].visible = true;
+        }
+    }]
+    mm = new MouseMenu(mousePos, menuBtns);
+    mouseMenu.push(mm);
+    mouseMenu[mouseMenu.length - 1].visible = true;
 }

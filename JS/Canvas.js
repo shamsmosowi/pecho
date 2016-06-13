@@ -14,6 +14,7 @@ class Canvas {
         shapesDict.pentagon = polygon(5);
         shapesDict.hexagon = polygon(6);
         shapesDict.septagon = polygon(7);
+        shapesDict.octagon = polygon(8);
         //x^2+y^2 = r^2
         //r = 25
         //y = sqrt(r^2 - x^2)
@@ -78,19 +79,16 @@ class Canvas {
       pop();
     }
     move(dx, dy) {
+
       this.drag.x -=dx*this.s;
       this.drag.y -=dy*this.s;
-      //console.log(dx,dy);
-      //this.drag.x -= dx/(this.s);this.drag.y -= dy/;
+
     }
-
-
-
-
 }
 
 
 function rescaleCanvas(){
+  // rescale / repostions objects when a screen is resized
    if(typeof zoom != 'undefined'|| typeof canvas.drag !='undefined'){
      console.log('true1');
       canvas.scale = zoom.value;

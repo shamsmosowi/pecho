@@ -1,14 +1,22 @@
 var waveType = {
+    // this is a dicitonary of functions that can be applied on differnet properties of shape elements, to create genrative patterns
     "triangle": x => {
+        //ref:https://en.wikipedia.org/wiki/Triangle_wave
         x[actions.property] = ((actions.max - actions.min) / 4) + 2 * abs((actions.index % actions.steps) - (actions.steps / 2)) - (actions.steps / 4);
         actions.index += 1
     },
     "sin": x => {
+        //ref:https://en.wikipedia.org/wiki/Sine_wave
         x[actions.property] = actions.d * Math.sin(actions.k * actions.index) + actions.min;
         actions.index += 1
     },
-    "square": 3,
+    "square": x => {
+        //ref:https://en.wikipedia.org/wiki/Square_wave
+        x[actions.property] = actions.d * sgn(Math.sin(actions.k * actions.index)) + actions.min;
+        actions.index += 1
+    },
     "even": x => {
+        //alternates between the highest and lowest values
         if (actions.index % 2) {
             x[actions.property] = actions.min;
         } else {
@@ -17,6 +25,7 @@ var waveType = {
         actions.index += 1;
     },
     "saw": x => {
+        //ref:https://en.wikipedia.org/wiki/Sawtooth_wave
         x[actions.property] = actions.min + (actions.max - actions.min) * (actions.index % actions.steps) / actions.steps;
         actions.index += 1;
     }
@@ -30,7 +39,6 @@ class Actions {
         this.min = 0;
         this.max = 0;
         this.steps = 0;
-
     }
     linear(array, p, firstValue, lastValue) {
         pushToUndos();
@@ -78,39 +86,39 @@ class Actions {
 
 
     }
-    repeat1D(array, paddingXY,nIter) {
-      // is vector used to postion clones in desired direction
-      var newArray = [];
-      for(var i=0;i<nIter;i++){
-        for (var a = 0; a < array.length; a++) {
-            newArray.push(elementCloner(array[a]));
+    repeat1D(array, paddingXY, nIter) {
+        // is vector used to postion clones in desired direction
+        var newArray = [];
+        for (var i = 0; i < nIter; i++) {
+            for (var a = 0; a < array.length; a++) {
+                newArray.push(elementCloner(array[a]));
+            }
         }
-      }
-      this.padding(newArray,'x',paddingXY.x);
-      this.padding(newArray,'y',paddingXY.y);
-      return newArray;
+        this.padding(newArray, 'x', paddingXY.x);
+        this.padding(newArray, 'y', paddingXY.y);
+        return newArray;
     }
-    repeat2D(array,padding,spacing,nIter){
-      //padding is a vector
-      //nIter is a vector
-      let sArray = array;
-      let newArray = [];
-      let paddingXY = padding;
-      for(var i=0;i<nIter.y;i++){
-        let tempArray  = repeat1D(sArray,padding,nIter.x);
-          this.padding(tempArray,'y',spacing.y);
-          moveItem(tempArray,newArray,tempArray.length);
-      }
-      moveItem(newArray,current,newArray.length);
-      //for (var i = 0; i < sArray.length; i++) {sArray[i]}
+    repeat2D(array, padding, spacing, nIter) {
+        //padding is a vector
+        //nIter is a vector
+        let sArray = array;
+        let newArray = [];
+        let paddingXY = padding;
+        for (var i = 0; i < nIter.y; i++) {
+            let tempArray = repeat1D(sArray, padding, nIter.x);
+            this.padding(tempArray, 'y', spacing.y);
+            moveItem(tempArray, newArray, tempArray.length);
+        }
+        moveItem(newArray, current, newArray.length);
+        //for (var i = 0; i < sArray.length; i++) {sArray[i]}
 
 
     }
     delete() {
-      if(selected().length>1){
-          pushToUndos();
-        current = current.filter(x => !x.selected);
-      }
+        if (selected().length > 1) {
+            pushToUndos();
+            current = current.filter(x => !x.selected);
+        }
     }
 
 
@@ -119,22 +127,22 @@ class Actions {
         //  pushes clipboard clone array to current
         //  let clipboardClone = clipboard.forEach(x=>return elementCloner(x));
         let clipboardLength = clipboard.length;
-        if (clipboardLength>0) {
-          pushToUndos();
-          for(var a = 0;a<clipboardLength;a++){
-              let newElement = elementCloner(clipboard[a]);
-              newElement.selected = true;
-              current.push(newElement);
-          }
+        if (clipboardLength > 0) {
+            pushToUndos();
+            for (var a = 0; a < clipboardLength; a++) {
+                let newElement = elementCloner(clipboard[a]);
+                newElement.selected = true;
+                current.push(newElement);
+            }
 
-          if(clipboardLength>1){
-          sendMessage(clipboardLength+" clipboard items were pasted",messageType.complete);
-        }else{
+            if (clipboardLength > 1) {
+                sendMessage(clipboardLength + " clipboard items were pasted", messageType.complete);
+            } else {
 
-          sendMessage("clipboard item was pasted",messageType.complete);
-        }
-        }else{
-          sendMessage("your clipboard is empty",messageType.alert);
+                sendMessage("clipboard item was pasted", messageType.complete);
+            }
+        } else {
+            sendMessage("your clipboard is empty", messageType.alert);
         }
 
 
@@ -143,18 +151,18 @@ class Actions {
 
         let objects = selected();
         let objectsLength = objects.length;
-        if (objectsLength>0) {
-          clipboard = [];
-          for (var a = 0; a < objectsLength; a++) {
-              clipboard.push(elementCloner(objects[a]));
-          }
-          if(objectsLength>1){
-          sendMessage(objectsLength+" selected elements were copied",messageType.complete);
-        }else{
-          sendMessage("Selected element was copied",messageType.complete);
-        }
-        }else {
-          sendMessage("No element is selected to be copied",messageType.alert);
+        if (objectsLength > 0) {
+            clipboard = [];
+            for (var a = 0; a < objectsLength; a++) {
+                clipboard.push(elementCloner(objects[a]));
+            }
+            if (objectsLength > 1) {
+                sendMessage(objectsLength + " selected elements were copied", messageType.complete);
+            } else {
+                sendMessage("Selected element was copied", messageType.complete);
+            }
+        } else {
+            sendMessage("No element is selected to be copied", messageType.alert);
         }
 
 
@@ -162,20 +170,19 @@ class Actions {
 
     }
     cut() {
-      let selectedLength = selected().length;
-        if(selectedLength>0){
-          pushToUndos();
-            clipboard = selected();
-            this.delete();
-            if(selectedLength>1){
+            let selectedLength = selected().length;
+            if (selectedLength > 0) {
+                pushToUndos();
+                clipboard = selected();
+                this.delete();
+                if (selectedLength > 1) {
 
-            sendMessage(selectedLength+" selected elements were cut",messageType.complete);
-          }else{
-            sendMessage("Selected element was cut",messageType.complete);
-          }
-          }
-            else {
-              sendMessage("No element is selected to be cut",messageType.alert);
+                    sendMessage(selectedLength + " selected elements were cut", messageType.complete);
+                } else {
+                    sendMessage("Selected element was cut", messageType.complete);
+                }
+            } else {
+                sendMessage("No element is selected to be cut", messageType.alert);
             }
         }
         //cut(){clipboard = [];moveItem(selected(),clipboard, selected().length);}
@@ -238,13 +245,23 @@ function elementCloner(obj) {
     } else if (obj instanceof Graphic) {
         //let eGraphic = new Graphic(60, 60, 1, 0, true,[createVector(75, 50)],{h:0,s:70,b:100});
         return (Object.assign(eGraphic, obj));
-    }//TODO:text element state
+    } //TODO:text element state
 }
 
 function moveItem(fromArray, toArray, n) {
     for (var i = 0; i < n; i++) {
         toArray.push(fromArray.pop());
     }
+}
+
+function sgn(n) {
+    //returns a boolean based on the sign of the sin(n) function, where positive returns true
+    if (Math.sin(n) > 0) {
+        return true
+    } else {
+        return false
+    }
+
 }
 /*
 currying model

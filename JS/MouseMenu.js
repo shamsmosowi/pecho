@@ -74,3 +74,42 @@ y = r × sin( θ )
     }
 
 }
+
+
+function shapesCall() {
+    //console.log(this);
+    let mousePos = createVector(mouseX, mouseY);
+    let menubs = [{
+        name: 'triangle',
+        img: btnImgDict.triangle,
+        call: function() {
+
+
+        }
+    }, {
+        name: 'square',
+        img: btnImgDict.square,
+        call: function() {
+
+        }
+    }, {
+        name: 'polygon',
+        img: btnImgDict.polygon,
+        call: function() {
+
+        }
+    }, {
+        name: 'circle',
+        img: btnImgDict.circle,
+        call: function() {
+
+        }
+    }];
+    //  mouseMenu.pos = createVector(mouseX,mouseY);
+    let mb = new MouseMenu(mousePos, menubs);
+    //mouseMenu.pop();
+    mouseMenu.push(mb);
+    mouseMenu[mouseMenu.length - 1].visible = true;
+
+
+}

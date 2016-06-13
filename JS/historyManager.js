@@ -1,20 +1,17 @@
-var redos = [];
-var undos = [];
-var clipboard = [];
-var current = [];
+var clipboard = [];//an array of the last copied or cut elements
+var current = [];//this is the array in which the stored objects are displayed on the canvas. and is the current state of the sketch
+var undos = [];//an array of previous state of the canvas
+var redos = [];//an array of undone states of the canvas
 //history mangment is implemented by having a current array containing all the elements in the art work, the current array is pushed into into the undos array, at every action, keeping
 function currentCloner(){
+  // this creates copy of the elements on the canvas to store in an array of undos
   let clonesArray = [];
-  //current.forEach(x=> var a = new Shape(1, 1, 1, 1, [createVector(1,1)],{h:1,s:1,b:1});clonesArray.push(a);});
-  //current = [];
   const currentSize = current.length-1;
 for(var n = 0; n<=currentSize;n++){
-  let ax = new Shape(60, 60, 1, 0, true,[ createVector(75, 50), createVector(100, 100), createVector(50, 100)],{h:0,s:70,b:100});
-      clonesArray.push(Object.assign(ax,current[n]));
-    //clonesArray[n].hue = 250;
+      clonesArray.push(elementCloner(current[n]));
+
     }
     undos.push(clonesArray);
-    //current.reduce(x =>let a = new Shape(1, 1, 1, 1, [createVector(1,1)],{h:1,s:1,b:1}); x.hue = 60;console.log(a););
   return clonesArray;
 }
 function pushToUndos(){
@@ -23,8 +20,9 @@ function pushToUndos(){
   btnsArray.undo.enabled = true;
 }
 function undo() {
+  // returns to a previous state of the canvas
   for (var i = 0; i < 2; i++) {
-    //for loop is quick solve to a bug that pushes 2 current array into the undos instead of one
+    //for loop is quick solve to a bug that pushes 2 current array into the undos instead of one for a currently unkown reason
     redos.push(currentCloner());
     current = undos.pop();
     if(undos.length === 0){
@@ -43,6 +41,7 @@ function undo() {
 }
 
 function redo() {
+  //pushes back a previously undo state of the canvas
     for (var i = 0; i < 2; i++) {
   undos.push(currentCloner());
     current = undos.pop();

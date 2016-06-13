@@ -24,7 +24,6 @@ class Shape extends Element{
     this.cy = this.cy/this.vertices.length;
   }
   draw(){
-    //TODO:join shape and Graphic draw functions boilers
       push();
 
       translate(this.x,this.y);
@@ -53,7 +52,8 @@ class Shape extends Element{
       pop();
       pop();
       fill(0);
-      //ellipse(this.x+this.cx,this.y+this.cy,25,25);
+
+
   }
   clicked() {
         if(dist(mouseX,mouseY,canvas.x+((this.x+this.cx-canvasWidth/2)*canvas.s),canvas.y+((this.y+this.cy-canvasHeight/2)*canvas.s))<25*Math.sqrt(pow(this.scaleX*canvas.s,2)+pow(this.scaleY*canvas.s,2)))

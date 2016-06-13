@@ -25,7 +25,9 @@ function VeggieBurgerMenu() {
         img: btnImgDict.invite,
         enabled: true,
         name: "invite a friend",
-        call: function() {}
+        call: function() {
+          //TODO
+        }
     }, 1, 3));
     this.items.push(new MenuItem({
         x: 50,
@@ -37,7 +39,10 @@ function VeggieBurgerMenu() {
         img: btnImgDict.download,
         enabled: true,
         name: "download",
-        call: function() {}
+        call: function() {
+
+          // saveCanvas() saves around 40 copies per click
+        }
     }, 2, 3));
     this.items.push(new MenuItem({
         x: 50,
@@ -49,7 +54,13 @@ function VeggieBurgerMenu() {
         img: btnImgDict.delete,
         enabled: true,
         name: "delete Canvas",
-        call: function() {}
+        call: function() {
+          current = [];
+          clipboard =[];
+          undos = [];
+          redos = [];
+          console.log('cleared');
+        }
     }, 3, 3));
     /*
         for (var i = 0; i < this.nItems; i++) {
@@ -111,9 +122,10 @@ function VeggieBurgerMenu() {
             this.bf = [10, 20, 20, 20, 30, 20];
             this.cf = [10, 30, 20, 30, 30, 30];
             this.backgroundf = 0;
+
             this.items.forEach(x => x.hide());
             this.opened = false;
-
+              this.items.forEach(x => x.clicked());
 
         } else {
             this.items.forEach(clickItem);
@@ -126,7 +138,7 @@ function VeggieBurgerMenu() {
 
 
         }
-        //animates the menu
+        //animates the menu using the tweenJS library
         //changes the values of a,b,c over 300ms period,
         let target = this;
         let tween = new TWEEN.Tween({
