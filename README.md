@@ -1,2 +1,2 @@
 # pecho
-a p5js sketchpad app
+a p5js generative sketchpad app
