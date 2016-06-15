@@ -11,28 +11,18 @@
         //TODO:add a loading screen to your p5.js sketch,
         // all you need to do is include an HTML element on your page the id p5_loading. It would look something like the following:
 
-        // stops html scrolling
+
         window.onscroll = function() {
+            // stops html scrolling
             window.scrollTo(0, 0);
         }
         window.addEventListener("keydown", function(e) {
-            // space, page up, page down and arrow keys:
+            //stops the defualt actions of space, page up, page down and arrow keys:
             if ([32, 33, 34, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
                 e.preventDefault();
             }
         }, false);
-        // prevent defualt right click menu, ref:http://stackoverflow.com/questions/4909167/how-to-add-a-custom-right-click-menu-to-a-webpage
-        /*if (document.addEventListener) {
-            document.addEventListener('contextmenu', function(e) {
-                alert("You've tried to open context menu"); //here you draw your own menu
-                //e.preventDefault();
-            }, false);
-        } else {
-            document.attachEvent('oncontextmenu', function() {
-                alert("You've tried to open context menu");
-                window.event.returnValue = false;
-            });
-        }*/
+
     </script>
 
     <script src="JS/libraries/p5.dom.js" type="text/javascript"></script>
@@ -40,6 +30,9 @@
 <script src="JS/inputs.js" type="text/javascript"></script>
     <script src="JS/elementsActions.js" type="text/javascript"></script>
     <script src="JS/historyManager.js" type="text/javascript"></script>
+        <script src="JS/SimpleBtn.js" type="text/javascript"></script>
+        <script src="JS/Stepper.js" type="text/javascript"></script>
+      <script src="JS/Popup.js" type="text/javascript"></script>
     <script src="JS/DragSelect.js" type="text/javascript"></script>
     <script src="JS/MouseMenu.js" type="text/javascript"></script>
     <script src="JS/Slider.js" type="text/javascript"></script>

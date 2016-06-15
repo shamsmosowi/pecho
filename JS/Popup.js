@@ -3,53 +3,92 @@ var popUpTheme = {
     boarder: '#95A5A6',
     body: '#ECF0F1',
     text: '#2C3E50',
-    btn: '#2ECC71',
+    greenbtn: '#2ECC71',
+    redbtn: '#E74C3C',
     disabledBtn: '#BDC3C7'
 };
 var popUpParams = {
     btns: [],
     swithes: [],
     steppers: [{
-        new Stepper()
     }],
     sliders: []
 }
 class Popup {
-    constructor(x, y, title, buttons, params) {
+    constructor(x, y, title, buttons,labels, params) {
         this.title = title;
         this.x = x;
         this.y = y;
         this.parameters = params;
         this.w = 300;
-        this.h = 40 + (params.btns.length + params.swithes.length + params.steppers.length)*30 + params.sliders.length*60;
+        this.h = 30 + params.length*50;
         this.scale = 1;
+        this.labels = labels;
+        this.buttons = buttons;
     }
     draw() {
         push();
-        translate();
+        translate(this.x,this.y);
         //  noStroke()
-        stroke('#34495E')
+        stroke(popUpTheme.banner);
         strokeWeight(3)
         fill(popUpTheme.body)
-        rect(this.x, this.y, this.w, this.h, 10, 10, 10, 10);
+        rect(0, 0, this.w, this.h, 10, 10, 10, 10);
         fill(popUpTheme.banner)
-        rect(this.x, this.y, this.w, 30, 10, 10, 0, 0);
-        fill(popUpTheme.body)
-        noStroke();
-        textSize(20)
-        textAlign(CENTER)
-        fill(255);
-
-        text(this.title, this.x + this.w / 2, this.y + 22)
+        rect(0, 0, this.w, 30, 10, 10, 0, 0);
+        this.header();
+        this.drawLabels();
         pop();
+        this.drawParams();
+        this.drawBtns();
     }
     drag(dx, dy) {
+
+      if (mouseX>this.x && mouseY>this.y && mouseX<this.x+this.w && mouseY<this.y+40) {
         this.x -= dx;
         this.y -= dy;
+      }
+      this.parameters.forEach(dragItem);
 
     }
-    click() {
+    header(){
+      fill(popUpTheme.body)
+      noStroke();
+      textSize(20)
+     textAlign(CENTER)
+      fill(255);
+      text(this.title,this.w / 2,22)
+    }
+    drawLabels(){
+        noStroke();
+        textSize(15)
+        textAlign(LEFT)
+        fill(popUpTheme.text);
+      let index = 0;
+        this.labels.forEach(x=>{text(x,10,50 + 40 *index);index+=1});
+    }
+    drawParams(){
+      let index = 0;
+      this.parameters.forEach(x=> {x.y = dialogBox[dialogBox.length-1].y + 40 + 40 *index;
+         x.x = dialogBox[dialogBox.length-1].x + dialogBox[dialogBox.length-1].w - x.w -10;
+         index+=1});
+      this.parameters.forEach(drawItem);
+    }
+    drawBtns(){
+        let index = 0;
+        this.buttons.forEach(x=> {x.x = dialogBox[dialogBox.length-1].x + 40 + 120 *index;
+       x.y = dialogBox[dialogBox.length-1].y + dialogBox[dialogBox.length-1].h - x.h -10;
+       index+=1});
+       this.buttons.forEach(drawItem);
 
+    }
+    press(){
+
+    }
+    clicked() {
+      //check for press location
+      this.parameters.forEach(clickItem);
+      this.buttons.forEach(clickItem);
     }
     onUpdate() {
 

@@ -20,7 +20,7 @@ class Canvas {
         //y = sqrt(r^2 - x^2)
 
 
-        shapesDict.circle = polygon(21)
+        shapesDict.circle = polygon(50)
         var shapes  = [];
         for (var i = 0; i < 40; i++) {
           for (var j = 0; j < 10; j++) {
@@ -39,17 +39,13 @@ class Canvas {
         this.ws = (0.9 * width * this.scale) / canvasWidth;
         this.hs = (0.9 * height * this.scale) / canvasHeight;
         this.s = 1;
-        zoom = new Slider(1, width - 250, height - 31, 200, 10, 0.05, 2,function(){rescaleCanvas()});
+        zoom = new Slider(width - 250, height - 31, 200, 10,1, 0.05, 3,function(){rescaleCanvas()});
 
     }
     draw() {
 
 
-        if (mouseX > this.x && mouseY > this.y && mouseX < this.x + (this.ws * canvasWidth) && mouseY < this.y + (this.hs * canvasHeight)) {
-            cursor(HAND);
-        } else {
-            cursor(ARROW);
-        }
+        //if (mouseX > this.x && mouseY > this.y && mouseX < this.x + (this.ws * canvasWidth) && mouseY < this.y + (this.hs * canvasHeight)) {cursor(HAND);} else {cursor(ARROW);}
         push();
         translate(this.x+this.drag.x, this.y+this.drag.y); //centering the canvas
         push()
@@ -91,7 +87,7 @@ function rescaleCanvas(){
   // rescale / repostions objects when a screen is resized
    if(typeof zoom != 'undefined'|| typeof canvas.drag !='undefined'){
      console.log('true1');
-      canvas.scale = zoom.value;
+      canvas.scale = zoom.val;
       canvas.x = (width/2)+ canvas.drag.x;
       canvas.y = (height/2)+ canvas.drag.y;
       canvas.ws = (0.9 * width * canvas.scale) / canvasWidth;

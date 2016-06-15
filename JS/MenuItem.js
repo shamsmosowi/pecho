@@ -1,3 +1,4 @@
+// this is used for menu Button
 class MenuItem extends Button {
     constructor(options, i, nItems) {
         super(options);
@@ -84,7 +85,7 @@ class MenuItem extends Button {
     clicked(hotKey) {
 
         if (dist(mouseX, mouseY, this.x,this.y) < this.w / 2 && this.enabled || hotKey) {
-          
+
             if (this.success) {
                 sendMessage(this.success, messageType.complete);
             }

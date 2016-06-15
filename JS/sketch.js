@@ -14,6 +14,7 @@ var backgroundColour;
 var menuDict = {};
 var actions;
 var mouseMenu = [];
+var dialogBox = [];
 var dragSelect;
 
 function preload() {
@@ -184,7 +185,7 @@ function setup() {
         enabled: true,
         name: "zoom out",
         call: function() {
-            zoom.value = zoom.value * 0.9;
+            zoom.val = zoom.val * 0.9;
             rescaleCanvas();
         }
     }, createVector(0, 0));
@@ -204,7 +205,7 @@ function setup() {
             //  resizes and centers the canvas
             canvas.drag.x = 0;
             canvas.drag.y = 0;
-            zoom.value = 1;
+            zoom.val = 1;
             rescaleCanvas();
         }
     }, createVector(0, 0));
@@ -216,7 +217,7 @@ function setup() {
 }
 var drawItem = x => x.draw()
 var clickItem = x => x.clicked()
-
+var dragItem = x => x.drag()
 function draw() {
     //draw loop mainly used to call objects draw functions
 
@@ -236,6 +237,10 @@ function draw() {
     if (mouseMenu.length > 0) {
         mouseMenu[mouseMenu.length - 1].draw();
     }
+    if (dialogBox.length > 0) {
+      dialogBox[dialogBox.length - 1].draw();
+  }
+
     messagesArray.forEach(drawItem); //loops through the array to show messages
     //if(mouse){rect(mousePos.x,mousePos.y,mouseX-mousePos.x,mouseX-mousePos.y);}
 }
@@ -266,6 +271,7 @@ function showFrameRate() {
     // print(frameCount / (millisecond / 1000));
 }
 window.onresize = function() {
+    //detects browser size change
     // centers canvas
     canvas.x = ((width / 2) - (canvas.ws * canvasWidth) / 2) + canvas.drag.x;
     canvas.y = ((height / 2) - (canvas.hs * canvasHeight) / 2) + canvas.drag.y;
@@ -281,32 +287,3 @@ window.onresize = function() {
     btnsArray.fullScreen.y = height - 26;
     btnsArray.fullScreen.x = width - 310;
 };
-document.ondblclick = function() {
-    let mousePos = createVector(mouseX, mouseY);
-    let menuBtns = [{
-        name: 'shapes',
-        img: btnImgDict.shapes,
-        call: shapesCall
-    }, {
-        name: 'colors',
-        img: btnImgDict.paintPalette,
-        call: function() {
-
-        }
-    }, {
-        name: 'pen',
-        img: btnImgDict.pen,
-        call: function() {
-
-        }
-    }, {
-        name: 'text',
-        img: btnImgDict.text,
-        call: function() {
-
-        }
-    }]
-    mm = new MouseMenu(mousePos, menuBtns);
-    mouseMenu.push(mm);
-    mouseMenu[mouseMenu.length - 1].visible = true;
-}

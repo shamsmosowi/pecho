@@ -1,5 +1,5 @@
 class Stepper{
-  constructor(x,y,size,val,step,min,max){
+  constructor(x,y,size,val,step,min,max,call){
     this.x = x;
     this.y = y;
     this.c = 0;
@@ -9,6 +9,7 @@ class Stepper{
     this.h = size;
     this.min = min;
     this.max = max;
+    this.update = call;
 
   }
 
@@ -16,7 +17,7 @@ class Stepper{
 
     push();
     translate(this.x,this.y);
-    textSize(26);
+    textSize(20);
     stroke('#34495E');
     strokeWeight(2);
     fill('#ECF0F1')
@@ -33,19 +34,32 @@ class Stepper{
     text('+', 68, 22)
     pop();
 
+
+    if(mouseY>this.y&& mouseY<this.y+this.h){
+    if(mouseX>this.x&& mouseX<this.x+this.h){
+      if(this.val>this.min)   cursor(HAND);
+    }else if(mouseX>this.x+2*this.h && mouseX<this.x+this.w){
+      if(this.val<this.max)   cursor(HAND);
+    }else{
+      cursor(ARROW);
+    }
+
   }
+}
   clicked(){
     if(mouseY>this.y&& mouseY<this.y+this.h){
     if(mouseX>this.x&& mouseX<this.x+this.h){
-      if(this.val>this.min) this.val -= this.step;
+      if(this.val>this.min) this.val -= this.step;this.update(this.val);
     }else if(mouseX>this.x+2*this.h && mouseX<this.x+this.w){
-      if(this.val<this.max) this.val += this.step;
+      if(this.val<this.max) this.val += this.step;this.update(this.val);
     }
   }
 
   }
-  dragged(dx){
-    this.c -= dx;
+  drag(dx){
+
+
+    //this.c -= dx;
   }
 
 

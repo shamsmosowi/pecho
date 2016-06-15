@@ -22,6 +22,7 @@ class Shape extends Element{
     this.vertices.forEach(x=>{this.cx+=x.x;this.cy+=x.y});
     this.cx = this.cx/this.vertices.length;
     this.cy = this.cy/this.vertices.length;
+
   }
   draw(){
       push();
@@ -37,13 +38,10 @@ class Shape extends Element{
       this.vertices.forEach(x=> vertex(x.x,x.y));
       endShape(CLOSE);
       if(this.selected){
-
-
         //unefficent, reduces fps to 1/4
-
         strokeWeight(1);
         beginShape();
-        this.vertices.forEach(x=> {vertex(x.x,x.y);fill('#2D3E50');noStroke();rect(x.x,x.y,3,3)});
+        this.vertices.forEach(x=> {vertex(x.x,x.y);fill('#2D3E50');noStroke();rect(x.x,x.y,3/this.scaleX,3/this.scaleY)});
           noFill();stroke('#2D3E50');
         endShape(CLOSE);
       }
@@ -58,9 +56,8 @@ class Shape extends Element{
   clicked() {
         if(dist(mouseX,mouseY,canvas.x+((this.x+this.cx-canvasWidth/2)*canvas.s),canvas.y+((this.y+this.cy-canvasHeight/2)*canvas.s))<25*Math.sqrt(pow(this.scaleX*canvas.s,2)+pow(this.scaleY*canvas.s,2)))
         {
-
         this.selected =true;
-    }else{
+        }else{
 
     }
   }

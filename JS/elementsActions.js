@@ -225,14 +225,14 @@ function selectall() {
 function ondblclick() {
 
 }
-
+function selected() {
+    return arrayFilter(current, 'selected');
+}
 function arrayFilter(array, boolean) {
     return array.filter(x => x[boolean]);
 }
 
-function selected() {
-    return arrayFilter(current, 'selected');
-}
+
 
 function elementCloner(obj) {
     if (obj instanceof Shape) {
