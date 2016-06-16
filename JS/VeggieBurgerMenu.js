@@ -59,6 +59,9 @@ function VeggieBurgerMenu() {
           clipboard =[];
           undos = [];
           redos = [];
+          canvas.hue = 0;
+          canvas.saturation = 0;
+          canvas.brightness = 100;
           console.log('cleared');
         }
     }, 3, 3));

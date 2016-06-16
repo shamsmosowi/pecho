@@ -7,10 +7,9 @@ class SimpleBtn{
     this.h = h;
     this.call = call;
     this.colour = colour;
-    console.log(this.call);
+
   }
     draw(){
-        console.log(this.update);
       push();
       translate(this.x,this.y)
       fill(this.colour);

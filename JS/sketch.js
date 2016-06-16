@@ -16,14 +16,15 @@ var actions;
 var mouseMenu = [];
 var dialogBox = [];
 var dragSelect;
-
+var paramsDict = {};
+var simpleBtnDict = {};
 function preload() {
     // things to load before setup() runs
     /*    app.listen(3000, '0.0.0.0', function() {
         console.log('Listening to port:  ' + 3000);
 
     });*/
-    actions = new Actions();
+
     dragSelect = new DragSelect();
     backgroundColour = color('#BDC3C7');
     if (window.navigator.userAgent.indexOf("Windows")) OSName = "Windows";
@@ -37,7 +38,7 @@ function preload() {
         'borderedSquare', 'noFillSquare', 'square', 'horizontalCenterAlignment', 'leftAlignment', 'rightAlignment',
         'verticalCenterAlignment', 'topAlignment', 'bottomAlignment', 'rotate', 'scale', 'triangle', 'pencil', 'pen', 'spiral',
         'mirrorVertically', 'mirrorVertically', 'mirrorHorizontally', 'flipHorizontally', 'mirrorVertically', 'mirrorHorizontally',
-        'eyedropper', 'crop', 'text', 'cube'
+        'eyedropper', 'crop', 'text', 'cube','random','saw','squareWave','alternate','sin','linear','constant','x','y'
     ];
     for (var i = 0; i < imgsArray.length; i++) {
         btnImgDict[imgsArray[i]] = loadImage('assests/buttons/theme1/' + imgsArray[i] + '.png')
@@ -146,7 +147,61 @@ function preload() {
     }, createVector(0, 0));
     btnsArray.settings = settingsBtn;
 
-    //TODO:mouseMenu dictionaries, create element menu, shape menu,text menu, image menu,grapgics minute
+    let sideStepper = new Stepper(50, 50, 30, 5, 1, 3, 20, function(val) {
+      selected().forEach(x=>{x.vertices = polygon(val)})
+    });
+    let rotateSlider = new Slider(50, 90, 200, 10, 45, 0, 360, function(val) {
+      selected().forEach(x=>{x.rotation = val;})
+    });
+    let hueSlider = new Slider(50, 90, 200, 10, 45, 0, 360, function(val) {
+      selected().forEach(x=>{x.hue = val;})
+    });
+    let brightnessSlider = new Slider(50, 90, 200, 10, 45, 0, 100, function(val) {
+      selected().forEach(x=>{x.brightness = val;})
+    });
+    let saturationSlider = new Slider(50, 90, 200, 10, 45, 0, 100, function(val) {
+      selected().forEach(x=>{x.saturation = val;})
+    });
+    let scaleSlider = new Slider(50, 90, 200, 10, 1, 0, 100, function(val) {
+
+            selected().forEach(x=>{x.scaleX = val;x.scaleY = val;})
+    });
+    let scaleXSlider = new Slider(50, 90, 200, 10, 1, 0, 40, function(val) {
+
+            selected().forEach(x=>{x.scaleX = val;})
+
+    });
+    let scaleYSlider = new Slider(50, 90, 200, 10, 1, 0, 40, function(val) {
+
+            selected().forEach(x=>{x.scaleY = val;})
+    });
+    let BhueSlider = new Slider(50, 90, 200, 10, 45, 0, 360, function(val) {
+      canvas.hue = val;
+
+    });
+    let BbrightnessSlider = new Slider(50, 90, 200, 10, 45, 0, 100, function(val) {
+      canvas.brightness = val;
+    });
+    let BsaturationSlider = new Slider(50, 90, 200, 10, 45, 0, 100, function(val) {
+      canvas.saturation = val;
+    });
+    paramsDict.BhueSlider = BhueSlider;
+    paramsDict.BbrightnessSlider = BbrightnessSlider;
+    paramsDict.BsaturationSlider = BsaturationSlider;
+    paramsDict.sideStepper = sideStepper;
+    paramsDict.rotateSlider = rotateSlider;
+    paramsDict.scaleSlider = scaleSlider;
+    paramsDict.scaleXSlider = scaleXSlider;
+    paramsDict.scaleYSlider = scaleYSlider;
+    paramsDict.hueSlider = hueSlider;
+    paramsDict.brightnessSlider = brightnessSlider;
+    paramsDict.saturationSlider = saturationSlider;
+
+    let saveBtn = new SimpleBtn(20,50,80,40,'save',true,popUpTheme.greenbtn,function(){saveDialog()})
+    let cancelBtn = new SimpleBtn(20,50,80,40,'cancel',true,popUpTheme.redbtn,function(){cancelDialog()})
+    simpleBtnDict.saveBtn = saveBtn;
+    simpleBtnDict.cancelBtn = cancelBtn;
+
 
 
 }
@@ -156,7 +211,8 @@ function setup() {
 
     colorMode(HSB, 360, 100, 100, 100);
     canvas = new Canvas();
-
+    actions = new Actions();
+    console.log(actions);
     //mouseMenu = new MouseMenu(createVector(0,0),{});
     var zoomInBtn = new Button({
         x: width - 30,
@@ -243,6 +299,11 @@ function draw() {
 
     messagesArray.forEach(drawItem); //loops through the array to show messages
     //if(mouse){rect(mousePos.x,mousePos.y,mouseX-mousePos.x,mouseX-mousePos.y);}
+
+
+    if (redos.length>100) {
+      redos.splice(0,90);
+    }
 }
 
 function windowResized() {

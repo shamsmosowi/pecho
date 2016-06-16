@@ -7,13 +7,12 @@ class Element {
     this.y = y || 0;
     this.scaleX = s.x || 1;
       this.scaleY = s.y || 1;
+      this.scale = 1;
     this.rotation = r || 0;}
     draw() {
         noStroke();
         push();
         translate(this.x, this.y);
-
-
         pop();
     }
 

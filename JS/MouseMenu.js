@@ -1,54 +1,9 @@
-var paramsDict = {};
-var simpleBtnDict = {};
 class MouseMenu {
     constructor(mousePos, menubtns) {
         this.visible = false;
         this.background = 30;
         this.backgroundf = 20;
         this.pos = mousePos;
-
-        let sideStepper = new Stepper(50, 50, 30, 5, 1, 3, 20, function(val) {
-            console.log('new val is' + val)
-              selected().forEach(x=>{x.vertices = polygon(val)})
-        });
-        let rotateSlider = new Slider(50, 90, 200, 10, 45, 0, 360, function(val) {
-          selected().forEach(x=>{x.rotation = val;})
-        });
-        let hueSlider = new Slider(50, 90, 200, 10, 45, 0, 360, function(val) {
-          selected().forEach(x=>{x.hue = val;})
-        });
-        let brightnessSlider = new Slider(50, 90, 200, 10, 45, 0, 100, function(val) {
-          selected().forEach(x=>{x.brightness = val;})
-        });
-        let saturationSlider = new Slider(50, 90, 200, 10, 45, 0, 100, function(val) {
-          selected().forEach(x=>{x.saturation = val;})
-        });
-        let scaleSlider = new Slider(50, 90, 200, 10, 1, 0, 100, function(val) {
-
-                selected().forEach(x=>{x.scaleX = val;x.scaleY = val;})
-        });
-        let scaleXSlider = new Slider(50, 90, 200, 10, 1, 0, 100, function(val) {
-
-                selected().forEach(x=>{x.scaleX = val;})
-
-        });
-        let scaleYSlider = new Slider(50, 90, 200, 10, 1, 0, 100, function(val) {
-
-                selected().forEach(x=>{x.scaleY = val;})
-        });
-        paramsDict.sideStepper = sideStepper;
-        paramsDict.rotateSlider = rotateSlider;
-        paramsDict.scaleSlider = scaleSlider;
-        paramsDict.scaleXSlider = scaleXSlider;
-        paramsDict.scaleYSlider = scaleYSlider;
-        paramsDict.hueSlider = hueSlider;
-        paramsDict.brightnessSlider = brightnessSlider;
-        paramsDict.saturationSlider = saturationSlider;
-
-        let saveBtn = new SimpleBtn(20,50,80,40,'save',true,popUpTheme.greenbtn,function(){saveDialog()})
-        let cancelBtn = new SimpleBtn(20,50,80,40,'cancel',true,popUpTheme.redbtn,function(){cancelDialog()})
-        simpleBtnDict.saveBtn = saveBtn;
-        simpleBtnDict.cancelBtn = cancelBtn;
 
 
 
@@ -76,7 +31,6 @@ console.log(menuDict.shapes);
         this.r = ((this.padding + this.btnWidth) * menubtns.length) / (2 * PI);
         for (var i = 0; i < menubtns.length; i++) {
 
-
             let bx = this.pos.x + this.r * cos(radians((360 / menubtns.length) * i));
             let by = this.pos.y + this.r * sin(radians((360 / menubtns.length) * i));
             let btn = new Button({
@@ -101,12 +55,11 @@ console.log(menuDict.shapes);
     }
     draw() {
         if (this.visible) {
-            background(20, this.background);
 
+            background(20, this.background);
             //  push()
             //translate(this.pos.x, this.pos.y)
             this.mbtns.forEach(drawItem);
-
             //  pop()
         }
     }
@@ -136,26 +89,36 @@ function shapesCall() {
         name: 'triangle',
         img: btnImgDict.triangle,
         call: function() {
+            unselectall();
+            pushToUndos();
             let e = new Shape(mousePos.x, mousePos.y, createVector(1, 1), 30, false, shapesDict.triangle, {
                 h: random(360),
                 s: 70,
                 b: 100
             });
             current.push(e);
+            current[current.length - 1].selected = true;
 
+            let d = new Popup(width / 2, height / 2, 'Create a triangle', [simpleBtnDict.saveBtn, simpleBtnDict.cancelBtn], ['width', 'height', 'rotate', 'hue', 'brightness', 'saturation'], [paramsDict.scaleXSlider, paramsDict.scaleYSlider, paramsDict.rotateSlider, paramsDict.hueSlider, paramsDict.brightnessSlider, paramsDict.saturationSlider]);
+            dialogBox.push(d);
             closeMouseMenu()
         }
     }, {
         name: 'square',
         img: btnImgDict.square,
         call: function() {
-
+            unselectall();
+            pushToUndos();
             let e = new Shape(mousePos.x, mousePos.y, createVector(1, 1), 45, false, shapesDict.square, {
                 h: random(360),
                 s: 70,
                 b: 100
             });
             current.push(e);
+            current[current.length - 1].selected = true;
+
+            let d = new Popup(width / 2, height / 2, 'Create a square', [simpleBtnDict.saveBtn, simpleBtnDict.cancelBtn], ['width', 'height', 'rotate', 'hue', 'brightness', 'saturation'], [paramsDict.scaleXSlider, paramsDict.scaleYSlider, paramsDict.rotateSlider, paramsDict.hueSlider, paramsDict.brightnessSlider, paramsDict.saturationSlider]);
+            dialogBox.push(d);
             closeMouseMenu()
         }
     }, {
@@ -169,16 +132,18 @@ function shapesCall() {
         name: 'circle',
         img: btnImgDict.circle,
         call: function() {
+            unselectall();
+            pushToUndos();
             let e = new Shape(mousePos.x, mousePos.y, createVector(1, 1), 0, false, shapesDict.circle, {
                 h: random(360),
                 s: 70,
                 b: 100
             });
             current.push(e);
-            current[current.length-1].selected = true;
+            current[current.length - 1].selected = true;
 
-    let d = new Popup(width / 2, height / 2, 'Create a circle', [simpleBtnDict.saveBtn, simpleBtnDict.cancelBtn], ['width','height','hue','brightness','saturation'],[paramsDict.scaleXSlider,paramsDict.scaleYSlider,paramsDict.hueSlider,paramsDict.brightnessSlider,paramsDict.saturationSlider]);
-    dialogBox.push(d);
+            let d = new Popup(width / 2, height / 2, 'Create a circle', [simpleBtnDict.saveBtn, simpleBtnDict.cancelBtn], ['width', 'height', 'hue', 'brightness', 'saturation'], [paramsDict.scaleXSlider, paramsDict.scaleYSlider, paramsDict.hueSlider, paramsDict.brightnessSlider, paramsDict.saturationSlider]);
+            dialogBox.push(d);
             closeMouseMenu()
         }
     }];
@@ -198,9 +163,9 @@ function polygonCall() {
         b: 100
     });
     current.push(e);
-    current[current.length-1].selected = true;
+    current[current.length - 1].selected = true;
 
-    let d = new Popup(width / 2, height / 2, 'Create a polygon', [simpleBtnDict.saveBtn, simpleBtnDict.cancelBtn], ['number of sides','rotation','size','hue','brightness','saturation'],[paramsDict.sideStepper,paramsDict.rotateSlider,paramsDict.scaleSlider,paramsDict.hueSlider,paramsDict.brightnessSlider,paramsDict.saturationSlider]);
+    let d = new Popup(width / 2, height / 2, 'Create a polygon', [simpleBtnDict.saveBtn, simpleBtnDict.cancelBtn], ['number of sides', 'rotation', 'size', 'hue', 'brightness', 'saturation'], [paramsDict.sideStepper, paramsDict.rotateSlider, paramsDict.scaleSlider, paramsDict.hueSlider, paramsDict.brightnessSlider, paramsDict.saturationSlider]);
     dialogBox.push(d);
 }
 
@@ -210,10 +175,180 @@ function closeMouseMenu() {
     }
 
 }
-function saveDialog(){
-  dialogBox.pop();
+
+function saveDialog() {
+    dialogBox.pop();
 }
-function cancelDialog(){
-  undo();
-  dialogBox.pop();
+
+function cancelDialog() {
+    undo();
+    dialogBox.pop();
+}
+
+function modeCall() {
+    pushToUndos();
+    sendMessage('choose a pattern type to apply', messageType.tip);
+    let mousePos = createVector(mouseX, mouseY);
+    let menubs = [{
+        name: 'alternate',
+        img: btnImgDict.alternate,
+        call: function() {
+            actions.steps = 1;
+            actions.wave = waveType.even;
+            let maxSlider = new Slider(50, 90, 200, 10, 1, 0, 100, function(val) {
+                actions.max = val;
+                actions.alternate();
+            });
+            let minSlider = new Slider(50, 90, 200, 10, 1, 0, 100, function(val) {
+                actions.min = val;
+                actions.alternate();
+            });
+            if (actions.property == 'hue' || actions.property == 'rotation') {
+                maxSlider.endValue = 360;
+                minSlider.endValue = 360;
+            } else if (actions.property == 'scale') {
+                maxSlider.endValue = 6;
+                minSlider.endValue = 6;
+            }
+            let d = new Popup(width / 2, height / 2, 'Choose values to alternate', [simpleBtnDict.saveBtn, simpleBtnDict.cancelBtn], ['Value A', 'Value B'], [minSlider, maxSlider]);
+            dialogBox.push(d);
+            closeMouseMenu()
+        }
+    }, {
+        name: 'random',
+        img: btnImgDict.random,
+        call: function() {
+            let maxSlider = new Slider(50, 90, 200, 10, 1, 0, 100, function(val) {
+                actions.max = val;
+                actions.randomize()
+            });
+            let minSlider = new Slider(50, 90, 200, 10, 1, 0, 100, function(val) {
+                actions.min = val;
+                actions.randomize();
+            });
+            if (actions.property == 'hue' || actions.property == 'rotation') {
+                maxSlider.endValue = 360;
+                minSlider.endValue = 360;
+            } else if (actions.property == 'scale') {
+                maxSlider.endValue = 6;
+                minSlider.endValue = 6;
+            }else if (actions.property == 'x'||actions.property == 'y') {
+                maxSlider.endValue = 1000;
+                minSlider.endValue = 1000;
+            }
+            let d = new Popup(width / 2, height / 2, 'Choose a range(Random)', [simpleBtnDict.saveBtn, simpleBtnDict.cancelBtn], ['minmum', 'maximum'], [minSlider, maxSlider]);
+            dialogBox.push(d);
+            closeMouseMenu()
+        }
+    }, {
+        name: 'square wave',
+        img: btnImgDict.squareWave,
+        call: function() {
+            actions.steps = 1;
+            actions.wave = waveType.square;
+            alternateCall();
+        }
+    }, {
+        name: 'sine wave',
+        img: btnImgDict.sin,
+        call: function() {
+            actions.steps = 1;
+            actions.wave = waveType.sin;
+            alternateCall();
+        }
+    }, {
+        name: 'saw wave',
+        img: btnImgDict.saw,
+        call: function() {
+            actions.steps = 1;
+            actions.wave = waveType.saw;
+            alternateCall();
+        }
+    }, {
+        name: 'linear',
+        img: btnImgDict.linear,
+        call: function() {
+            let maxSlider = new Slider(50, 90, 200, 10, 1, 0, 100, function(val) {
+                actions.max = val;
+                actions.linear()
+            });
+            let minSlider = new Slider(50, 90, 200, 10, 1, 0, 100, function(val) {
+                actions.min = val;
+                actions.linear();
+            });
+            if (actions.property == 'hue' || actions.property == 'rotation') {
+                maxSlider.endValue = 360;
+                minSlider.endValue = 360;
+            } else if (actions.property == 'scale') {
+                maxSlider.endValue = 6;
+                minSlider.endValue = 6;
+            } else if (actions.property == 'x', actions.property == 'y') {
+                maxSlider.endValue = 1000;
+                minSlider.endValue = 1000;
+            }
+            let d = new Popup(width / 2, height / 2, 'Choose a range(Linear)', [simpleBtnDict.saveBtn, simpleBtnDict.cancelBtn], ['minmum', 'maximum'], [minSlider, maxSlider]);
+            dialogBox.push(d);
+            closeMouseMenu()
+        }
+    }, {
+        name: 'constant',
+        img: btnImgDict.constant,
+        call: function() {
+            actions.steps = 1;
+            actions.wave = waveType.even;
+            let maxSlider = new Slider(50, 90, 200, 10, 1, 0, 100, function(val) {
+                actions.min = val;
+                actions.max = val;
+                actions.alternate();
+            });
+            if (actions.property == 'hue' || actions.property == 'rotation') {
+                maxSlider.endValue = 360;
+            } else if (actions.property == 'scale') {
+                maxSlider.endValue = 6;
+            } else if (actions.property == 'x', actions.property == 'y') {
+                maxSlider.endValue = 1000;
+            }
+            let d = new Popup(width / 2, height / 2, 'Choose a value', [simpleBtnDict.saveBtn, simpleBtnDict.cancelBtn], ['Value'], [maxSlider]);
+            dialogBox.push(d);
+            closeMouseMenu();
+        }
+    }];
+    //  mouseMenu.pos = createVector(mouseX,mouseY);
+    let mb = new MouseMenu(mousePos, menubs);
+    //mouseMenu.pop();
+    mouseMenu.push(mb);
+    mouseMenu[mouseMenu.length - 1].visible = true;
+
+
+
+}
+
+
+function alternateCall() {
+    let maxSlider = new Slider(50, 90, 200, 10, 1, 0, 100, function(val) {
+        actions.max = val;
+        actions.alternate();
+    });
+    let minSlider = new Slider(50, 90, 200, 10, 1, 0, 100, function(val) {
+        actions.min = val;
+        actions.alternate();
+    });
+    let stepSlider = new Slider(50, 90, 200, 10, 1, 0, 100, function(val) {
+        actions.steps = val;
+        actions.alternate();
+    });
+    if (actions.property == 'hue' || actions.property == 'rotation') {
+        maxSlider.endValue = 360;
+        minSlider.endValue = 360;
+    } else if (actions.property == 'scale') {
+        maxSlider.endValue = 6;
+        minSlider.endValue = 6;
+    } else if (actions.property == 'x', actions.property == 'y') {
+        maxSlider.endValue = 1000;
+        minSlider.endValue = 1000;
+    }
+    let d = new Popup(width / 2, height / 2, 'Choose values to alternate', [simpleBtnDict.saveBtn, simpleBtnDict.cancelBtn], ['Minmum', 'Maximum', 'period'], [minSlider, maxSlider, stepSlider]);
+    dialogBox.push(d);
+    closeMouseMenu()
+
 }

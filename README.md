@@ -2,7 +2,7 @@
 <<<<<<< HEAD
 a p5js sketchpad app
 # Pecho
-Pecho is a P5js based pattern sketchpad application targeting children between ages 7 and 14. It aims to introduce them to the power of computational procedure automation.
+Pecho is a P5js based pattern sketchpad application targeting children between ages 7 and 14. It aims to introduce them to the power of computational procedure automation through visual creativity.
 
 #Brief
 Pecho is a tool that can be used to create generative patterns for iphone and ipad covers
@@ -34,5 +34,3 @@ While providing undo, redo, cut, copy, and paste buttons in the top left corner 
 
 #External libraries
 Pecho uses the P5.js and Tween.js libraries
-=======
-a p5js generative sketchpad app

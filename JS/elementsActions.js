@@ -32,81 +32,79 @@ var waveType = {
 }
 class Actions {
     constructor() {
-        this.property = 0;
+        this.property = 'hue';
         this.index = 0;
         this.d = 0;
         this.k = 0;
         this.min = 0;
         this.max = 0;
         this.steps = 0;
+        this.pattern ='linear';
+        this.array = selected();
+        this.wave = waveType.even;
+        this.padding = createVector(50,50);
+        this.nIter = createVector(10,10);
     }
-    linear(array, p, firstValue, lastValue) {
-        pushToUndos();
-        let property = p;
-        let h = 0;
+    linear() {
         let index = 0;
-        let length = array.length;
-        let k = (lastValue - firstValue) / length;
-        array.forEach(x => {
-            x[property] = firstValue + k * index;
+        let length = this.array.length;
+        this.k = (this.max - this.min) / length;
+        this.array.forEach(x => {
+            x[this.property] = actions.min + actions.k * index;
             index += 1;
         });
     }
-    randomize(array, p, minValue, maxValue) {
-        pushToUndos();
-        let property = p;
-        array.forEach(x => {
-            x[property] = random(minValue, maxValue)
+    randomize() {
+        this.array.forEach(x => {
+            x[this.property] = random(actions.min, actions.max)
         });
     }
-    alternate(array, p, minValue, maxValue, steps, type) {
+    alternate() {
         //use a sine function to alternate value
         //requires a min and max, and step size(period)
-        pushToUndos();
-        this.min = minValue;
-        this.max = maxValue;
-        this.property = p;
-        this.d = (maxValue - minValue) / 2; //midpoint(vertical shift and Amplitude)
-        this.k = steps / (2 * PI);
+        //pushToUndos();
+        this.d = (this.max - this.min) / 2; //midpoint(vertical shift and Amplitude)
+        this.k = this.steps / (2 * PI);
         this.index = 0;
-        this.steps = steps;
-        array.forEach(type);
+        actions.array.forEach(this.wave);
     }
-    padding(array, property, padding) {
-        pushToUndos();
+    Padding(array, property, padding) {
         let index = 0;
         array.forEach(x => {
             x[property] = x[property] + padding * index;
             index += 1
         });
-
-
     }
     exponational() {
 
 
     }
-    repeat1D(array, paddingXY, nIter) {
+    repeat1D(array, paddingXY, nIter,index) {
         // is vector used to postion clones in desired direction
         var newArray = [];
         for (var i = 0; i < nIter; i++) {
             for (var a = 0; a < array.length; a++) {
-                newArray.push(elementCloner(array[a]));
+              let x = elementCloner(array[a]);
+              x.x = x.x + this.padding.x * index;
+                newArray.push(x);
+
             }
+
         }
-        this.padding(newArray, 'x', paddingXY.x);
-        this.padding(newArray, 'y', paddingXY.y);
+
+      //  this.Padding(newArray, 'y', paddingXY.y);
         return newArray;
     }
-    repeat2D(array, padding, spacing, nIter) {
+    repeat2D() {
         //padding is a vector
         //nIter is a vector
-        let sArray = array;
+        pushToUndos();
+        let sArray = this.array;
         let newArray = [];
-        let paddingXY = padding;
-        for (var i = 0; i < nIter.y; i++) {
-            let tempArray = repeat1D(sArray, padding, nIter.x);
-            this.padding(tempArray, 'y', spacing.y);
+        let paddingXY = this.padding;
+        for (var i = 0; i < this.nIter.y; i++) {
+            let tempArray = this.repeat1D(sArray, this.padding, this.nIter.x,i);
+            this.Padding(tempArray, 'y', this.padding.y);
             moveItem(tempArray, newArray, tempArray.length);
         }
         moveItem(newArray, current, newArray.length);
@@ -115,7 +113,7 @@ class Actions {
 
     }
     delete() {
-        if (selected().length > 1) {
+        if (selected().length > 0) {
             pushToUndos();
             current = current.filter(x => !x.selected);
         }
@@ -263,13 +261,3 @@ function sgn(n) {
     }
 
 }
-/*
-currying model
-let dragon =
-    name =>
-    size =>
-    element =>
-    name + ' is a ' +
-    size + ' a dragon that breaths ' +
-    element + '!'
-*/

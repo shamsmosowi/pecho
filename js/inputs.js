@@ -1,9 +1,10 @@
 var mousePos;
 var mouse = false; //tracks the press state of the mouse
+
 document.onkeydown = KeyPress;
 document.onkeyup = keyReleased;
-document.ondblclick = doubleClick
-
+document.ondblclick = doubleClick;
+window.onscroll= mouseWheel;
 function mouseClicked() {
 
     // mouse clicked, detects mouse press after release
@@ -23,9 +24,9 @@ function mouseClicked() {
     //if(!shiftKey&&!cmdKey){unselectall()}
     if (!canvas.movable&& dialogBox.length===0) {
         if (!shiftKey && !cmdKey) {
-            current.forEach(x => x.selected = false)
+            current.forEach(x => x.selected = false);
         }
-        current.forEach(x => x.clicked());
+            current.forEach(x => x.clicked());
         if (shiftKey || cmdKey) {
             dragSelect.release();
         }
@@ -197,10 +198,12 @@ function doubleClick() {
             img: btnImgDict.shapes,
             call: shapesCall
         }, {
-            name: 'colors',
+            name: 'Background Colour',
             img: btnImgDict.paintPalette,
             call: function() {
-
+              let d = new Popup(width/2, height/2, 'Background Colour', [simpleBtnDict.saveBtn, simpleBtnDict.cancelBtn], ['hue','brightness','saturation'],[paramsDict.BhueSlider,paramsDict.BbrightnessSlider,paramsDict.BsaturationSlider]);
+              dialogBox.push(d);
+              closeMouseMenu()
             }
         }, {
             name: 'pen',
@@ -218,36 +221,71 @@ function doubleClick() {
     }
 
     if (selected().length > 0) {
+      actions.array = selected()
         menuBtns = [{
             name: 'repeat',
             img: btnImgDict.shapes,
             call: function() {
             pushToUndos();
-              let d = new Popup(width/2,height/2,'repeat', ['ok','cancel'],['switches','steppers','sliders'])
-            dialogBox.push(d)}
+            let xSlider = new Slider(50, 90, 200, 10, 10, 0, 50, function(val) {
+                undo()
+                actions.nIter.x = round(val);
+                actions.repeat2D()
+            });
+            let ySlider = new Slider(50, 90, 200, 10, 10, 0, 50, function(val) {
+              actions.nIter.y = round(val);
+              undo()
+              actions.repeat2D()
+            });
+            let paddingXSlider = new Slider(50, 90, 200, 10, 10, 0, 200, function(val) {
+                undo()
+                actions.padding.x = round(val);
+                actions.repeat2D()
+            });
+            let paddingYSlider = new Slider(50, 90, 200, 10, 10, 0, 200, function(val) {
+              actions.padding.y = round(val);
+              undo()
+              actions.repeat2D()
+            });
+
+            let d = new Popup(width / 2, height / 2, 'Choose a range(Random)', [simpleBtnDict.saveBtn, simpleBtnDict.cancelBtn], ['columns','padding(x)','rows', 'padding(y)'], [ySlider,paddingXSlider, xSlider,paddingYSlider]);
+            dialogBox.push(d);
+            closeMouseMenu()
+          }
         }, {
             name: 'colors',
             img: btnImgDict.paintPalette,
             call: function() {
-                pushToUndos();
-              let d = new Popup(width/2,height/2,'color', ['ok','cancel'],['switches','steppers','sliders'])
-            dialogBox.push(d)
+              actions.property = 'hue';
+              modeCall();
             }
         }, {
             name: 'scale',
             img: btnImgDict.scale,
             call: function() {
-                pushToUndos();
-              let d = new Popup(width/2,height/2,'scale object', ['ok','cancel'],['switches','steppers','sliders'])
-              dialogBox.push(d)
+              actions.property = 'scale';
+              modeCall();
             }
         }, {
             name: 'rotate',
             img: btnImgDict.rotate,
             call: function() {
-                pushToUndos();
-              let d = new Popup(width/2,height/2,'rotate', ['ok','cancel'],['switches','steppers','sliders'])
-            dialogBox.push(d)
+              actions.property = 'rotation';
+              modeCall();
+            }
+        }, {
+            name: 'x',
+            img: btnImgDict.y,
+            call: function() {
+              actions.property = 'x';
+              modeCall();
+            }
+        }, {
+            name: 'y',
+            img: btnImgDict.x,
+            call: function() {
+              actions.property = 'y';
+              modeCall();
             }
         }]
     }
@@ -261,11 +299,17 @@ function doubleClick() {
 if (document.addEventListener) {
     document.addEventListener('contextmenu', function(e) {
         doubleClick();
-        //e.preventDefault();
+        e.preventDefault();
     }, false);
 } else {
     document.attachEvent('oncontextmenu', function() {
         doubleClick();
         window.event.returnValue = false;
     });
+}
+
+function mouseWheel(event) {
+  //TODO:scrolling to zoom does not work
+    zoom.value += event.delta/10;
+
 }

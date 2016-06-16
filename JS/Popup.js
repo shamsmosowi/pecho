@@ -21,7 +21,7 @@ class Popup {
         this.y = y;
         this.parameters = params;
         this.w = 300;
-        this.h = 30 + params.length*50;
+        this.h = 80 + params.length*50;
         this.scale = 1;
         this.labels = labels;
         this.buttons = buttons;

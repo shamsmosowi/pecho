@@ -23,6 +23,7 @@ class Shape extends Element{
     this.cx = this.cx/this.vertices.length;
     this.cy = this.cy/this.vertices.length;
 
+
   }
   draw(){
       push();
@@ -30,7 +31,7 @@ class Shape extends Element{
       translate(this.x,this.y);
       push();
 
-        scale(this.scaleX,this.scaleY);
+        scale(this.scaleX*this.scale,this.scaleY*this.scale);
       push();
       rotate(radians(this.rotation));
       fill(this.hue,this.saturation,this.brightness);

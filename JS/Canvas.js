@@ -6,7 +6,10 @@ var circlePoints = 20;
 class Canvas {
     constructor() {
       this.movable = false;
-      this.backgroundColour = color('#fff');
+      this.hue = 0;
+      this.brightness = 100;
+      this.saturation = 0;
+      this.backgroundColour = color(this.hue,this.saturation,this.brightness);
         //shapesDict.triangle = [createVector(25, 0), createVector(50, 50), createVector(0, 50)];
         //shapesDict.square = [createVector(0, 0), createVector(50, 0), createVector(50, 50),createVector(0, 50)];
         shapesDict.triangle =polygon(3) ;
@@ -22,15 +25,7 @@ class Canvas {
 
         shapesDict.circle = polygon(50)
         var shapes  = [];
-        for (var i = 0; i < 40; i++) {
-          for (var j = 0; j < 10; j++) {
-            let s = floor(random(3));
-            if(s ===0){var e = new Shape(51*i, 51*j, createVector(1,1), 0, false,shapesDict.septagon,{h:0,s:70,b:100});}
-            if(s ===1){var e = new Shape(51*i, 51*j, createVector(1,1), 0, false,shapesDict.hexagon,{h:0,s:70,b:100});}
-            if(s ===2){var e = new Shape(51*i, 51*j, createVector(1,1), 0, false,shapesDict.pentagon,{h:0,s:70,b:100});}
-          current.push(e);
-        }
-        }
+        
       this.drag = createVector(0, 0);
         this.scale = 1;
 
@@ -57,7 +52,7 @@ class Canvas {
         }
      scale(this.s);
         noStroke();
-        fill(this.backgroundColour);
+        fill(this.hue,this.saturation,this.brightness);
         rectMode(CENTER);
         rect(0, 0, canvasWidth, canvasHeight);
         this.drawElements();

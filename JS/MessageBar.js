@@ -16,13 +16,9 @@ function sendMessage(message, type) {
     messagesArray.push(messageBar);
     messageBar.show();
 }//messageBar api
-
-
-
 function MessageBar(message, type) {
     // a class for alerting users of problems, notify for any changes, and provides relevent tips related to the context of what the user is creating(by observing selected elements or tools being used)
     // takes a string and message enum value, creates message bar with a dynamic width depending on message length and buttons buttons
-
     this.messageText = message;
     this.y = height;
     this.w = this.messageText.length * 9 + 100;
